@@ -56,6 +56,28 @@
   font-size: 1.5rem;
 }
 
+.pagination{
+  text-align:center ;
+}
+
+.pagination button{
+  background: #1F3665;
+  color: white;
+  padding: 8px 25px;
+    border: 2px solid;
+    border-radius: 3px;
+    margin: 20px 15px 20px 0;
+}
+
+.pagination button:hover{
+  background: #0C1F44;
+}
+
+.wide_card{
+  background: #f8f8f9;
+  margin-bottom: 30px;
+}
+
 .code {
   background: #fafafa;
   border-radius: 5px;
