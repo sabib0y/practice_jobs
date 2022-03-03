@@ -1,34 +1,54 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router'
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import logo from '../public/images/logo.svg'
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 import Container from '@mui/material/Container';
 import styles from '../styles/Home.module.css';
+import SearchBar from './components/SearchBar'
+
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Logo from './components/Logo';
 
 const key = 'a44004e391a0422c9d41dc94bdc128af'
 const url = 'https://api.nhs.scot/JobsSearch/v1.0.0/Vacancy/GetAllVacs'
 
 const Home: NextPage = () => {
   const [data, setData] = useState([])
+  const [featuredData, setFeaturedData] = useState([])
   const [isLoading, setLoading] = useState(false)
   const [pageNumber, setPageNumber] = useState(1)
   const [postNumber] = useState(5)
 
-  const currentPageNumber = (pageNumber * postNumber) - postNumber
-  const paginatedPosts = data.splice(currentPageNumber, postNumber)
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchInput, setSearchInput] = useState('');
 
-  const handlePrev = () => {
-    if (pageNumber === 1) return
-    setPageNumber(pageNumber - 1)
+  const currentPageNumber = (pageNumber * postNumber) - postNumber
+  const paginatedPosts = data.splice(0, 6)
+  const router = useRouter()
+
+  const generateRandomNumber = (data: any) => Math.floor(Math.random() * data.length);
+
+  const getTwoFeaturedPosts = (data: any) => {
+    let arr = [];
+    arr.push(data[generateRandomNumber(data)])
+    arr.push(data[generateRandomNumber(data)])
+    return arr
   }
-  const handleNext = () => {
-    setPageNumber(pageNumber + 1)
-  }
+
+  const goToJobPage = () => router.push('/search')
+  const runThis = () => { console.log('ping') }
 
   useEffect(() => {
     setLoading(true)
@@ -41,7 +61,13 @@ const Home: NextPage = () => {
       .then((data) => {
         setData(data)
         setLoading(false)
+
+        const featuredPosts: any = getTwoFeaturedPosts(data)
+        console.log({ featuredPosts });
+
+        setFeaturedData(featuredPosts)
         console.log(data);
+
       })
   }, [])
 
@@ -56,40 +82,115 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <Container maxWidth="sm">
-          <h1 className="text-3xl font-bold underline w-6">
-            Hello world!
-          </h1>
+      <div className={styles.overall_wrapper}>
+        <main className={styles.main}>
+          <div className={styles.hero}>
+            <Logo />
+            <Container>
 
-          <h2 style={{ textAlign: 'center', marginBottom: '40px' }} >All vacancies</h2>
-          {paginatedPosts.map((item: any) => (
-            <Card key={item.id} sx={{ minWidth: 275 }} className={styles.wide_card}>
-              <CardContent>
-                <h2>{item.title} </h2>
-                <p>{item.location} </p>
-                <p>{item.shortDescription} </p>
-              </CardContent>
-            </Card>
-          ))}
-        </Container>
+              <div className={styles.hero_text}>
+                <h1>Practice Recruitment</h1>
+                <p>The NHS is <strong>Scotland's biggest employer</strong>.</p>
+                <p>
+                  If you want the chance to make a real difference to people's lives
+                  consider a career with NHS Scotland.
+                </p>
 
-      </main>
+              </div>
+              <SearchBar 
+                setSelectedRegion={setSelectedRegion} 
+                setSelectedCategory={setSelectedCategory}
+                selectedRegion={selectedRegion}
+                selectedCategory={selectedCategory}
+                setSearchInput={setSearchInput}
+              />
+              <div className={styles.top_searches}>
+                <p>Top searches: Medical | GP | Dental | Nurse | Locum | Admin</p>
+              </div>
+            </Container>
 
-      <footer className={styles.footer}>
-        <Container maxWidth="sm">
-
-          <div className={styles.pagination}>
-            <div>Page {pageNumber} </div>
-            <div>
-              <Button size="small" onClick={handlePrev}>Prev</Button>
-              <Button size="small" onClick={handleNext}>Next</Button>
-            </div>
           </div>
 
-        </Container>
 
-      </footer>
+          <div className={styles.featured_jobs}>
+            <Container>
+              <h2>Featured Jobs</h2>
+              <div className={styles.featured_jobs_inner}>
+
+                {featuredData.map((item: any, i: number) => (
+                  <div className={styles.block} key={i}>
+                    <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={runThis}>
+                      <CardContent>
+                        <h4>{item.title} </h4>
+                        <div className={styles.inner_block}>
+                          {
+                            item.organisationName &&
+                            <div className={styles.organisation}>
+                              <span>Organisation</span>
+                              <p>{item.organisationName} </p>
+                            </div>
+                          }
+
+                          <div className={styles.closing_date}>
+                            <span>Closing date</span>
+                            <p>{new Date(item.closingDate).toLocaleDateString('en-US')} </p>
+                          </div>
+                          <div className={styles.location}>
+                            <span>Address</span>
+                            <p>{item.location} </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>)
+
+                )}
+              </div>
+
+            </Container>
+          </div>
+
+          <Container>
+
+            <div className={styles.latest_vacancies}>
+              <h2>Latest Vacancies</h2>
+              <p>There are <strong>{data.length}</strong> vacancies listed, view all</p>
+              <div className={styles.block_wrapper}>
+
+                {paginatedPosts.map((item: any, i: number) => (
+                  <div className={styles.block} key={i}>
+                    <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={runThis}>
+                      <CardContent>
+                        <h4>{item.title} </h4>
+                        <div className={styles.inner_block}>
+                          <p className={styles.org}>{item.organisationName} </p>
+                          <p className={styles.closing_date}>{new Date(item.closingDate).toLocaleDateString('en-GB')} </p>
+                          <p className={styles.location}>{item.location} </p>
+                        </div>
+                      </CardContent>
+
+                    </Card>
+                  </div>
+
+                ))}
+                <div className={styles.btn_wrapper}>
+                  <button onClick={goToJobPage}>Show all vacancies </button>
+                </div>
+              </div>
+            </div>
+          </Container>
+
+        </main>
+
+        <footer className={styles.footer}>
+          <Container maxWidth="sm">
+
+
+          </Container>
+
+        </footer>
+      </div>
+
     </>
   )
 }
