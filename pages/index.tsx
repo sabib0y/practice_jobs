@@ -179,9 +179,9 @@ const Home: NextPage = () => {
 
               <div className={styles.hero_text}>
                 <h1>Practice Recruitment</h1>
-                <p>The NHS is <strong>Scotland's biggest employer</strong>.</p>
+                <p>The NHS is <strong>Scotland&apos;s biggest employer</strong>.</p>
                 <p>
-                  If you want the chance to make a real difference to people's lives
+                  If you want the chance to make a real difference to people&apos;s lives
                   consider a career with NHS Scotland.
                 </p>
 
