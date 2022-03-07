@@ -5,10 +5,6 @@ import { useRouter } from 'next/router'
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import logo from '../public/images/logo.svg'
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 
 import Container from '@mui/material/Container';
 import styles from '../styles/Home.module.css';
@@ -28,10 +24,6 @@ const Home: NextPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [postNumber] = useState(5)
 
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [searchInput, setSearchInput] = useState('');
-
   const [searchParams, setSearchParams] = useState({
     title: '',
     nhsBoard: '',
@@ -39,9 +31,7 @@ const Home: NextPage = () => {
   });
 
   const [paginatedPosts, setPaginatedPosts] = useState([])
-
   const currentPageNumber = (pageNumber * postNumber) - postNumber
-
   const router = useRouter()
   // const fetcher = (...args:any) => fetch(...args).then((res) => res.json())
 
