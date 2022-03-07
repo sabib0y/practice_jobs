@@ -204,7 +204,7 @@
 
 .block{
   flex-basis: 33.33%;
-  padding: 20px;
+  padding: 10px;
 }
 
 
@@ -454,6 +454,18 @@ margin-left: auto;
   background: #102539;
 }
 
+.search_wrapper h2{
+  font-size: 50px;
+  margin: 20px 0;
+  color: #063154;
+  margin-bottom: 0;
+}
+
+.search_wrapper h2 + p{
+  font-size: 20px;
+  margin-top: 5px;
+  margin-bottom: 23px;
+}
 
 @media (max-width: 600px) {
   .grid {

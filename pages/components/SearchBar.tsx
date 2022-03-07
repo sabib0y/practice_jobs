@@ -6,33 +6,19 @@ import FormControl from '@mui/material/FormControl';
 import styles from '../../styles/Home.module.css';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { categories, regions } from '../../utils/regions.js'
-import { DriveEtaDimensions } from '@styled-icons/material/DriveEta';
 
 interface Props {
-    selectedRegion: any, 
-    selectedCategory: any, 
-    setSelectedRegion: any, 
-    setSelectedCategory: any
-    setSearchInput?: any
+    searchParamss: any,
+    searchParams: any,
+    onInputChange: (e: any) => void
 }
 
 
-const SearchBar: React.FC<Props> = ({ selectedRegion, selectedCategory, setSelectedRegion, setSelectedCategory, setSearchInput }) => {
-
-    const handleChangeRegion = (event: SelectChangeEvent) => {
-        setSelectedRegion(event.target.value);
-    };
-
-    const handleChangeCategory = (event: SelectChangeEvent) => {
-        setSelectedCategory(event.target.value);
-    };
+const SearchBar: React.FC<Props> = ({searchParamss,  searchParams, onInputChange }) => {
 
     const handleClick = () => {
         console.log('ping');
-    }
-
-    const handleInputChange = (e: any) => {
-        setSearchInput(e.target.value);
+        searchParamss(searchParams)
     }
 
     return (
@@ -43,16 +29,19 @@ const SearchBar: React.FC<Props> = ({ selectedRegion, selectedCategory, setSelec
                 placeholder='Search for a Vacancy'
                 variant="filled"
                 size="small"
-                onChange={handleInputChange}
+                onChange={onInputChange}
                 className={styles.text_field}
+                value={searchParams.title}
+                name='title'
             />
 
-            <FormControl sx={{ m: 1, minWidth: 120 }}  className={styles.region_field}>
+            <FormControl sx={{ m: 1, minWidth: 120 }} className={styles.region_field}>
                 <Select
-                    value={selectedRegion}
-                    onChange={handleChangeRegion}
+                    onChange={onInputChange}
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
+                    name='nhsBoard'
+                    value={searchParams.nhsBoard}
                 >
                     <MenuItem value="">
                         <em>Region</em>
@@ -65,10 +54,12 @@ const SearchBar: React.FC<Props> = ({ selectedRegion, selectedCategory, setSelec
 
             <FormControl sx={{ m: 1, minWidth: 120 }} className={styles.category_field}>
                 <Select
-                    value={selectedCategory}
-                    onChange={handleChangeCategory}
+                    onChange={onInputChange}
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
+                    name='jobFamily'
+                    value={searchParams.jobFamily}
+
                 >
                     <MenuItem value="">
                         <em>Category</em>
@@ -79,12 +70,12 @@ const SearchBar: React.FC<Props> = ({ selectedRegion, selectedCategory, setSelec
                 </Select>
             </FormControl>
 
-            <Button 
-                variant="contained" 
+            <Button
+                variant="contained"
                 onClick={handleClick}
                 className={styles.search_btn}
             >
-                Search <span className={styles.btn_icon}/>
+                Search <span className={styles.btn_icon} />
             </Button>
 
         </div>

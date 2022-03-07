@@ -22,13 +22,8 @@ const Home: NextPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [postNumber] = useState(12) //12 items a page
 
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-
   const currentPageNumber = (pageNumber * postNumber) - postNumber
   const paginatedPosts = data.splice(currentPageNumber, postNumber)
-
-  const runThis = () => { console.log('ping') }
 
   const handlePrev = () => {
     if (pageNumber === 1) return
@@ -37,6 +32,9 @@ const Home: NextPage = () => {
   const handleNext = () => {
     setPageNumber(pageNumber + 1)
   }
+
+  const runThis = () => console.log('ping');
+  
 
   useEffect(() => {
     setLoading(true)
@@ -56,7 +54,6 @@ const Home: NextPage = () => {
   if (isLoading) return <p>Loading...</p>
   if (!data) return <p>No profile data</p>
 
-  console.log(logo);
 
 
   return (
@@ -74,17 +71,16 @@ const Home: NextPage = () => {
           <Logo />
 
           </div>
-          <Container>
+          <Container className={styles.search_wrapper}>
             
           <h2>Search Results</h2>
-              <p>There are <strong>{data.length}</strong> that match your search</p>
+              <p>There are <strong>{data.length}</strong> results that match your search</p>
 
-            <SearchBar 
-              setSelectedRegion={setSelectedRegion} 
-              setSelectedCategory={setSelectedCategory}
-              selectedRegion={selectedRegion}
-              selectedCategory={selectedCategory}
-            />
+            {/* <SearchBar 
+                onInputChange={onInputChange}
+                searchParams={searchParams}
+                searchParamss={searchParamss}
+            /> */}
           </Container>
           <Container>
 
@@ -108,9 +104,9 @@ const Home: NextPage = () => {
                       <CardContent>
                         <h4>{item.title} </h4>
                         <div className={styles.inner_block}>
-                          <p>{item.organisationName} </p>
-                          <p>{new Date(item.closingDate).toLocaleDateString('en-GB')} </p>
-                          <p>{item.location} </p>
+                          <p className={styles.org}>{item.organisationName} </p>
+                          <p className={styles.closing_date}>{new Date(item.closingDate).toLocaleDateString('en-GB')} </p>
+                          <p className={styles.location}>{item.location} </p>
                         </div>
                       </CardContent>
                     </Card>
