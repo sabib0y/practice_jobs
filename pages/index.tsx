@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import styles from '../styles/Home.module.css';
 import SearchBar from './components/SearchBar'
 
-import useSWR from 'swr'
+// import useSWR from 'swr'
 
 import Logo from './components/Logo';
 
