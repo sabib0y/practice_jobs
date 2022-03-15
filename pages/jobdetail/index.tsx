@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import styles from '../../styles/Home.module.css';
 
 import Logo from '../components/Logo';
-import { useGlobalState } from '../lib/DataState';
+import { useGlobalState } from '../../lib/DataState';
 
 const JobDetail: NextPage = () => {
     const { query: { id } } = useRouter()

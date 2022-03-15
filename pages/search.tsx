@@ -6,7 +6,7 @@ import Container from '@mui/material/Container';
 import styles from '../styles/Home.module.css';
 import SearchBar from './components/SearchBar'
 import Logo from './components/Logo'
-import { useGlobalState } from './lib/DataState';
+import { useGlobalState } from '../lib/DataState';
 import Pagination from './components/Pagination';
 import { useRouter } from 'next/router';
 
