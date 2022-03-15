@@ -6,7 +6,7 @@
   background:url('../public/images/hero.png');
   background-size:cover;
   background-repeat: no-repeat;
-  height: 400px;
+  height: 430px;
 }
 
 .hero h1{
@@ -24,7 +24,7 @@
 }
 
 .hero p{
-  max-width: 700px;
+  max-width: 750px;
   margin-top: 0;
 }
 
@@ -36,10 +36,18 @@
 .btn_wrapper button{
   background: #193c5d;
   color: #fff;
-  font-size: 16px;
   padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 3px;
   border: none;
+  margin: 30px 0 40px;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.btn_wrapper button:hover{
+  background: #255079;
 }
 
 .top_searches,
@@ -48,11 +56,25 @@
 }
 
 .hero_text{
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.hero_text{
+  font-family: 'Epilogue', sans-serif;
+}
+
+.hero_text h1{
+  font-weight: 800;
+}
+
+.hero_text .strong{
+  font-weight: 800;
 }
 
 .hero_text p{
   margin: 0;
+  max-width: 600px;
+  line-height: 22px;
 }
 
 .top_searches{
@@ -72,6 +94,20 @@
 .search_bar .region_field fieldset,
 .search_bar .category_field fieldset{
   border-color: transparent;
+}
+
+.search_bar li em,
+.search_bar .category_field em,
+.search_bar .region_field em,
+.search_bar .region_field li,
+.search_bar input{
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+}
+
+.search_bar .category_field em,
+.search_bar .region_field em{
+  font-style: normal;
 }
 
 .search_bar > div > div,
@@ -99,7 +135,7 @@
 
 .search_bar > div:before{
   position: absolute;
-  width: 3px;
+  width: 2px;
   background: #193c5d;
   height: 40px;
   content: '';
@@ -158,6 +194,8 @@
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 21px;
+  position: relative;
+  right: -1px;
 }
 
 .search_bar .search_btn:before{
@@ -261,6 +299,17 @@
   display: flex;
 }
 
+/* Sub headings */
+.latest_vacancies h2,
+.featured_jobs h2{
+  font-size: 41px;
+  margin: 30px 0 10px;
+}
+
+.latest_vacancies h2{
+  color: #102539;
+}
+
 .featured_jobs_inner{
   display: flex;
   margin: 0 -10px;
@@ -268,7 +317,8 @@
 
 .featured_jobs .inner_block p:before{
   width: 33px;
-  height: 35px;
+  height: 30px;
+  top: -3px;
 }
 
 
@@ -285,31 +335,70 @@
   width: 30px;
 }
 
+.featured_jobs_inner{
+  margin-bottom: 50px;
+}
+
+.featured_jobs_inner .block .wide_card:hover{
+  box-shadow: 0px 7px 39.47px 1.53px rgba(0, 0, 0, 0.56);
+}
+
 .featured_jobs_inner > div{
   width: 50%;
   flex-basis: 50%;
 }
 
 .featured_jobs_inner > div h4{
-  font-size: 20px;
+  font-size: 23px;
   margin: 0 0 10px;
   line-height: 26px;
-  min-height: 57px;
+  min-height: 45px;
 }
 
 .featured_jobs_inner > div > div:hover{
   box-shadow: 0px 11px 49.47px 1.53px rgba(0, 0, 0, 0.56); 
 }
 
+.featured_jobs_inner .inner_block > div:last-child p{
+  margin-bottom: 5px;
+}
+
 .featured_jobs_inner .inner_block span{
   font-size: 14px;
   color: #4e4e4e;
-  margin-left: 35px;
+  margin-left: 40px;
+  font-family: 'Open Sans', sans-serif; 
 }
 
 .featured_jobs_inner .inner_block p{
-  font-size: 24px;
-    margin-top: 0;
+  font-size: 20px;
+  margin-top: 3px;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  padding-left: 40px;
+  line-height: 25px;
+}
+
+.view_all_link a{
+  color: #102539;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+}
+
+.view_all_link a:hover{
+  text-decoration: underline;
+}
+
+.latest_vacancies p{
+  font-size: 16px;
+  margin: 0 0 15px;
+  letter-spacing: 0.03rem;
+}
+
+.latest_vacancies > p{
+  font-size: 20px;
+  margin: 0 0 10px;
+  letter-spacing: 0.05rem;
 }
 
 .footer {
@@ -356,31 +445,49 @@
   font-size: 1.5rem;
 }
 
-.pagination{
+.pagination_wrapper [aria-disabled="true"]{
+  color: grey;
+  pointer-events: none;
+  border: 0.1rem solid grey;
+
+}
+
+.pagination_wrapper{
   display: flex;
+  margin: 10px 0 0;
+  padding-bottom: 20px;
   align-items: center;
-}
-
-.pagination .page{
-margin-left: auto;
-}
-
-.pagination button{
-  color: #1F3665;
-  padding: 8px 25px;
-    border: 2px solid;
-    border-radius: 3px;
-    margin: 20px 15px 20px 0;
-}
-
-.pagination button:hover{
-  background: #1F3665;
-  color: #fff;
-  border-color: #1F3665;
 
 }
 
-.wide_card{
+.pagination_wrapper button{
+  color: #102539;
+  border: 0.1rem solid #102539;
+  background: transparent;
+  font-size: 12px;
+  padding: 7px 10px;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 95px;
+  letter-spacing: 0.15em;
+  transition: all 0.5s;
+}
+
+.pagination_wrapper button:hover{
+  border-color: #49a4f2;
+}
+
+.pagination_wrapper button:nth-child(2){
+  margin-left: 20px;
+}
+
+.pagination_wrapper p{
+  margin: 0 0 0 20px;
+    font-size: 13px;
+}
+
+.block .wide_card{
   background: #fff;
   height: 100%;
   border: 3px solid white;
@@ -389,7 +496,7 @@ margin-left: auto;
   border-radius: 10px;
 }
 
-.wide_card:hover{
+.block .wide_card:hover{
   background: #fff;
   cursor: pointer;  
   height: 100%;
@@ -466,6 +573,36 @@ margin-left: auto;
   margin-top: 5px;
   margin-bottom: 23px;
 }
+
+/* job detail page */
+
+/* ffffffffff */
+/* font-family: 'Epilogue', sans-serif; */
+/* fw -> 300, 400, 600, 800 */
+/* font-family: 'Open Sans', sans-serif; */
+/* fw -> 400 reg, 700 bold */
+
+
+
+
+
+/* ccccccccccc */
+/*blue ->  background: #102539; */
+
+
+.job_detail{
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.job_detail h1{
+  font-size: 40px;
+  color: #063154;
+  margin: 0 0 10px;
+}
+/* end job detail page */
 
 @media (max-width: 600px) {
   .grid {

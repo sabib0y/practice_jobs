@@ -8,17 +8,13 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { categories, regions } from '../../utils/regions.js'
 
 interface Props {
-    searchParamss: any,
     searchParams: any,
+    filteredOptions?: any,
     onInputChange: (e: any) => void
+    clickHandler: (e: any) => void
 }
 
-
-const SearchBar: React.FC<Props> = ({ searchParamss, searchParams, onInputChange }) => {
-
-    const handleClick = () => {
-        searchParamss(searchParams)
-    }
+const SearchBar: React.FC<Props> = ({ searchParams, onInputChange, clickHandler }) => {
 
     if (searchParams) {
         return (
@@ -59,7 +55,6 @@ const SearchBar: React.FC<Props> = ({ searchParamss, searchParams, onInputChange
                         inputProps={{ 'aria-label': 'Without label' }}
                         name='jobFamily'
                         value={searchParams.jobFamily}
-
                     >
                         <MenuItem value="">
                             <em>Category</em>
@@ -72,7 +67,7 @@ const SearchBar: React.FC<Props> = ({ searchParamss, searchParams, onInputChange
 
                 <Button
                     variant="contained"
-                    onClick={handleClick}
+                    onClick={clickHandler}
                     className={styles.search_btn}
                 >
                     Search <span className={styles.btn_icon} />
