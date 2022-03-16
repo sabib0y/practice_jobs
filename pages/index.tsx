@@ -29,7 +29,7 @@ const Home: NextPage = () => {
 
   const [paginatedPosts, setPaginatedPosts] = useState([])
   const router = useRouter()
-  const { data, isLoading, runSearch, filteredOptions } = useGlobalState();
+  const { data, isLoading, runSearch, filteredOptions, setTopSearchTerm } = useGlobalState();
 
   const generateRandomNumber = (data: any) => Math.floor(Math.random() * data.length);
 
@@ -48,17 +48,14 @@ const Home: NextPage = () => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value })
   }
 
-  const goToSearchWithJobString = (searchTerm : string) => {
-    setSearchParams({
-      title: searchTerm,
-      nhsBoard: '',
-      jobFamily: '',
-    })
+  const searchWithTopSearchTerm = (searchTerm: string) => {
+    setTopSearchTerm(searchTerm)
   }
+
+  const topSearchTerms = ['Medical','GP','Dental','Nurse', 'Locum','Admin']
 
   if(data.length && !isDataPulled){
     const featuredPosts: any = getTwoFeaturedPosts(data)
-    console.log('featuredPosts',featuredPosts);
     
     setFeaturedData(featuredPosts)
     setPaginatedPosts(data.slice(0, 6))
@@ -99,8 +96,13 @@ const Home: NextPage = () => {
                   filteredOptions={filteredOptions}
                 />
                 <div className={styles.top_searches}>
-                  <p>Top searches: 
-                    Medical | GP | Dental | Nurse | Locum | Admin</p>
+                  <p>Top searches: {
+                      topSearchTerms.map((item) => (
+                        <>
+                        <span onClick={() => searchWithTopSearchTerm(item)}>{item}</span>
+                        </>
+                      ))
+                    }</p>
                 </div>
               </Container>
 
@@ -173,13 +175,26 @@ const Home: NextPage = () => {
               </div>
             </Container>
 
+            {/* <div className={styles.related_links}>
+            <Container>
+              <h3>Related links</h3>
+              <div className={styles.related_links_inner}>
+                <span className={styles.image}/>
+                <div>
+                  <p>NHS Inform</p>
+                  <button>Read More</button>
+                </div>
+              </div>
+            </Container>
+              
+            </div> */}
+
           </main>
 
+
           <footer className={styles.footer}>
-            <Container maxWidth="sm">
+              <Logo />
 
-
-            </Container>
 
           </footer>
         </div>

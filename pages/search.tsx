@@ -23,6 +23,7 @@ const Search: NextPage = () => {
 
   const router = useRouter()
   const perPage = 12
+  
   const { title, nhsBoard, jobFamily } = searchOptions
   let pageCount = Math.ceil(data.length / perPage)
   pageCount = pageCount === 0 ? 1 : pageCount

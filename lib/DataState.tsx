@@ -11,6 +11,9 @@ function DataStateProvider({ children }: any) {
     const [isLoading, setLoading] = useState(false)
     const [searchOptions, setSearchOptions] = useState({})
     const [filteredOptions, setFilteredOptions] = useState([])
+  const [isTopSearchSet, setIsTopSearchSet] = useState(false)
+  const [topSearchTerm, setTopSearchTerm] = useState('')
+
 
     const elasticIndex = 'practicejobs'
     const maxedOutLimit = 3000
@@ -68,6 +71,19 @@ function DataStateProvider({ children }: any) {
         })
       }
 
+      useEffect(() => {
+        if(topSearchTerm.length){
+          let obj = {
+            title: topSearchTerm,
+            nhsBoard: '',
+            jobFamily: '',
+          }
+
+          runSearch(obj)
+        }
+      },[topSearchTerm])
+      
+
     useEffect(() => {
         setLoading(true)
 
@@ -97,7 +113,9 @@ function DataStateProvider({ children }: any) {
         searchOptions,
         setSearchOptions,
         runSearch,
-        filteredOptions
+        filteredOptions,
+        setIsTopSearchSet,
+        setTopSearchTerm,
     } } >
         { children }
         </LocalStateProvider>
