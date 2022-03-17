@@ -77,14 +77,21 @@ const JobDetail: NextPage = () => {
 
                                         </div>
                                             <div className={styles.meta_row}>
-                                                <div className={styles.salary}>
+                                                {
+                                                    salary &&
+                                                    <div className={styles.salary}>
                                                     <span>Salary</span>
                                                     <p>{salary}</p>
                                                 </div>
-                                                <div className={styles.contract_type}>
+                                                }
+                                                {
+                                                    contractDuration &&
+                                                    <div className={styles.contract_type}>
                                                     <span>Contract type</span>
                                                     <p>{contractDuration}</p>
                                                 </div>
+                                                }
+
                                             </div>
 
                                         <div className={styles.location}>
@@ -101,12 +108,12 @@ const JobDetail: NextPage = () => {
                                             </Popup>
                                         </div>
 
-                                        <div className={styles.job_pack}>
+                                        {/* <div className={styles.job_pack}>
                                             <span>Job pack</span>
                                             <div>
                                                 <button onClick={() => { console.log('coming soon!') }}>Download</button>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className={styles.map_container}>
                                         <div className={styles.map_wrapper}>
