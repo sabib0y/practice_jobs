@@ -18,7 +18,7 @@ const Search: NextPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [paginatedResults, setPaginatedResults] = useState<any>([])
 
-  const { data: unfilteredData, isLoading, runSearch, searchOptions, filteredOptions } = useGlobalState();
+  const { data: unfilteredData, isLoading, runSearch, searchOptions, filteredOptions, setSelectedJob } = useGlobalState();
   const data = filteredOptions.length ? filteredOptions : unfilteredData
 
   const router = useRouter()
@@ -50,14 +50,6 @@ const Search: NextPage = () => {
   const clickHandler = () => {
     runSearch(searchParams)
     setPageNumber(1)
-  }
-
-  const goToJobDetail = (id:string) => {
-    // router.push({
-    //   pathname: '/jobdetail/' + id,
-    //   query: { id },
-    // })    
-    return null
   }
 
   useEffect(() => {
@@ -101,7 +93,7 @@ const Search: NextPage = () => {
 
                   {getPaginatedResults()?.map((item: any, i: number) => (
                     <div className={styles.block} key={i}>
-                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => {goToJobDetail(item.uniqueID)}}>
+                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => {setSelectedJob(item)}}>
                         <CardContent>
                           <h4>{item.title} </h4>
                           <div className={styles.inner_block}>

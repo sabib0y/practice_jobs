@@ -31,8 +31,6 @@ const Home: NextPage = () => {
   const router = useRouter()
   const { data, isLoading, runSearch, filteredOptions, setTopSearchTerm } = useGlobalState();
 
-  console.log('data',data);
-  
   const generateRandomNumber = (data: any) => Math.floor(Math.random() * data.length);
 
   const getTwoFeaturedPosts = (data: any) => {

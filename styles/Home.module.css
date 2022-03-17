@@ -777,6 +777,10 @@ font-size: 0;
   margin-bottom: 30px;
 }
 
+.meta_block .text_section{
+  max-width: 50%;
+}
+
 .map_container{
   flex:1;
   padding-left: 10%; 
@@ -787,7 +791,7 @@ font-size: 0;
   position: relative;
 }
 
-.meta_block .heading_section .salary p:before{
+ .heading_section .salary p:before{
   background:url('../public/images/money_icon.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -821,8 +825,9 @@ font-size: 0;
   display: none;
 }
 
-.description_block p{
+.description_block {
   max-width: 80%;
+  overflow: hidden;
 }
 
 
@@ -894,6 +899,7 @@ font-size: 35px;
   height: 26px;
 }
 
+.job_detail h1,
   .search_wrapper h2,
   .latest_vacancies h2,
   .featured_jobs h2{
@@ -921,15 +927,27 @@ font-size: 35px;
       margin-top: 0;
       line-height: normal;
       color: grey;
-      margin-bottom: 20px;
+      margin-bottom: 5px;
     } 
 
     .job_detail .map_container{
       display: none;
     }
 
-.description_block p{
+.job_detail .job_pack > div{
+  padding-left: 32px;
+}
+
+.description_block {
   max-width: 100%;
+}
+
+.meta_block .heading_section > div{
+  flex-direction: column;
+}
+
+.meta_block .heading_section > div > div:last-child{
+  margin-left: 0;
 }
 
     

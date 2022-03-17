@@ -14,13 +14,27 @@ import 'reactjs-popup/dist/index.css';
 
 const JobDetail: NextPage = () => {
     const { query: { id } } = useRouter()
+    const {jobDetailInfo} = useGlobalState();
 
+    console.log('jobDetailInfo',jobDetailInfo);
+    
     const item = {
         geoLat: -56.1645,
         geoLong: -34.9011,
         location: 'location'
     }
 
+    if(jobDetailInfo?.title){
+
+    const {advertType, description, geoLong, geoLat, organisationName, title, postedDate, closingDate, salary, contractDuration, location} = jobDetailInfo
+        let setOrganisationName = '';
+    
+        if(advertType === 'jobTrain'){
+            setOrganisationName = location
+        }else{
+            setOrganisationName = organisationName
+        }
+        
     return (
         <>
             <div className={styles.overall_wrapper}>
@@ -33,47 +47,56 @@ const JobDetail: NextPage = () => {
                     <Container>
                         <div className={styles.job_detail}>
                             <div className={styles.heading_section}>
-                                <h1>Heading title goes here</h1>
+                                <h1>{title}</h1>
                                 <div className={styles.meta_block}>
                                     <div className={styles.text_section}>
                                         <div className={styles.organisation}>
                                             <span>Organisation</span>
+                                            {setOrganisationName ? 
+                                            <p>{setOrganisationName}</p>:
                                             <p>NHS</p>
+                                        }
                                         </div>
                                         <div className={styles.heading_section}>
                                             <div className={styles.meta_row}>
                                                 <div className={styles.closing_date}>
                                                     <span>Posted on</span>
-                                                    <p>10/10/2020 </p>
+                                                    {postedDate ? 
+                                            <p>{postedDate}</p>:
+                                            <p>NA</p>
+                                        }
                                                 </div>
                                                 <div className={styles.closing_date}>
                                                     <span>Closing date</span>
-                                                    <p>10/10/2020 </p>
-                                                </div>
-                                            </div>
-                                            <div className={styles.meta_row}>
-                                                <div className={styles.salary}>
-                                                    <span>Salary</span>
-                                                    <p>£9.50 per hour</p>
-                                                </div>
-                                                <div className={styles.contract_type}>
-                                                    <span>Contract type</span>
-                                                    <p>Permanent</p>
+                                                    {closingDate ? 
+                                            <p>{closingDate}</p>:
+                                            <p>NA</p>
+                                        }
                                                 </div>
                                             </div>
 
                                         </div>
+                                            <div className={styles.meta_row}>
+                                                <div className={styles.salary}>
+                                                    <span>Salary</span>
+                                                    <p>{salary}</p>
+                                                </div>
+                                                <div className={styles.contract_type}>
+                                                    <span>Contract type</span>
+                                                    <p>{contractDuration}</p>
+                                                </div>
+                                            </div>
 
                                         <div className={styles.location}>
                                             <span>Address</span>
-                                            <p>Such and such, 123 zone</p>
+                                            <p>{location}</p>
                                             <Popup 
                                             trigger={<p className={styles.map_trigger}>Click here to see map</p>} 
-                                            position="right center"
+                                            position="center center"
                                             modal
                                             nested
                                             >
-                                            <MarkerMap geoLat={-56.1645} geoLong={-34.9011} />
+                                            <MarkerMap geoLat={geoLat} geoLong={geoLong} />
 
                                             </Popup>
                                         </div>
@@ -87,13 +110,14 @@ const JobDetail: NextPage = () => {
                                     </div>
                                     <div className={styles.map_container}>
                                         <div className={styles.map_wrapper}>
-                                            <MarkerMap geoLat={-56.1645} geoLong={-34.9011} />
+                                            {/* <MarkerMap geoLat={-56.1645} geoLong={-34.9011} /> */}
+                                            <MarkerMap geoLat={55.835221} geoLong={-4.437821} />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.description_block}>
-                                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Blanditiis at id distinctio dolor culpa iusto, nulla quisquam, perspiciatis a nihil nesciunt magni iure quibusdam, ipsa aspernatur. Quas quo nisi unde!</p>
+                                {description}
                             </div>
 
 
@@ -107,6 +131,10 @@ const JobDetail: NextPage = () => {
 
         </>
     )
+}else{
+    return null
+}
+
 }
 
 export default JobDetail

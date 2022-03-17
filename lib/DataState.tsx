@@ -13,12 +13,15 @@ function DataStateProvider({ children }: any) {
     const [filteredOptions, setFilteredOptions] = useState([])
   const [isTopSearchSet, setIsTopSearchSet] = useState(false)
   const [topSearchTerm, setTopSearchTerm] = useState('')
+  const [selectedJob, setSelectedJob] = useState<any>({})
+  const [jobDetailInfo, setJobDetailInfo] = useState<any>({})
 
 
     const elasticIndex = 'practicejobs'
     const maxedOutLimit = 3000
 
     const key = 'a44004e391a0422c9d41dc94bdc128af'
+    const practiceJobsUrl = (ref:string) => `https://api.nhs.scot/JobsSearch/v1.0.0/ElasticJobsSearch/GetVacancy/practicejobs/${ref}`
     const url = `https://api.nhs.scot/JobsSearch/v1.0.0/ElasticJobsSearch/GetVacancySummaries/${elasticIndex}/${maxedOutLimit}`
 
     const runSearch = (obj: any) => {
@@ -82,7 +85,42 @@ function DataStateProvider({ children }: any) {
           runSearch(obj)
         }
       },[topSearchTerm])
-      
+
+      useEffect(() => {
+          if(selectedJob.jobFamily){
+            let ref = selectedJob?.reference?.length? selectedJob.reference : selectedJob.id
+            
+          // setLoading(true)
+
+          fetch(practiceJobsUrl(ref), {
+            headers: {
+              'Ocp-Apim-Subscription-Key': key
+            }
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log('return', data);
+              setJobDetailInfo(data[0])
+              
+              // setLoading(false)
+              // setData(data)                 
+            })
+        }
+    
+      },[selectedJob])
+
+      useEffect(() => {
+        console.log('jobDetailInfo',jobDetailInfo);
+        
+        if(jobDetailInfo?.title){
+
+        router.push({
+          pathname: '/jobdetail'
+        })
+      }
+
+      }, [jobDetailInfo])
+
 
     useEffect(() => {
         setLoading(true)
@@ -116,6 +154,8 @@ function DataStateProvider({ children }: any) {
         filteredOptions,
         setIsTopSearchSet,
         setTopSearchTerm,
+        setSelectedJob,
+        jobDetailInfo,
     } } >
         { children }
         </LocalStateProvider>
