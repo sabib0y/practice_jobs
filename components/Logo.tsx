@@ -1,6 +1,6 @@
-import logo from '../../public/images/logo.svg'
+import logo from '../public/images/logo.svg'
 import Container from '@mui/material/Container';
-import styles from '../../styles/Home.module.css';
+import styles from '../styles/Home.module.css';
 import Link from 'next/link'
 
 export default function Logo(){
