@@ -6,9 +6,9 @@ import { useRouter } from 'next/router'
 import Container from '@mui/material/Container';
 import styles from '../../styles/Home.module.css';
 
-import Logo from '../components/Logo';
+import Logo from '../../components/Logo';
 import { useGlobalState } from '../../lib/DataState';
-import { MarkerMap } from '../components/MarkerMap'
+import { MarkerMap } from '../../components/MarkerMap'
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 

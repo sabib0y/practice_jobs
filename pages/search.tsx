@@ -4,10 +4,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
 import styles from '../styles/Home.module.css';
-import SearchBar from './components/SearchBar'
-import Logo from './components/Logo'
+import SearchBar from '../components/SearchBar'
+import Logo from '../components/Logo'
 import { useGlobalState } from '../lib/DataState';
-import Pagination from './components/Pagination';
+import Pagination from '../components/Pagination';
 import { useRouter } from 'next/router';
 
 const key = 'a44004e391a0422c9d41dc94bdc128af'

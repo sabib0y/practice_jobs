@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useGlobalState } from '../../lib/DataState';
+import { useGlobalState } from '../lib/DataState';
 import styles from '../../styles/Home.module.css';
 import Container from '@mui/material/Container';
 

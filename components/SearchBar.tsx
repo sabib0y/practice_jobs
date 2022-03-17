@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import styles from '../../styles/Home.module.css';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { categories, regions } from '../../utils/regions.js'
+import { categories, regions } from '../utils/regions.js'
 
 interface Props {
     searchParams: any,
