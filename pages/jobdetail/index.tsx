@@ -8,9 +8,18 @@ import styles from '../../styles/Home.module.css';
 
 import Logo from '../components/Logo';
 import { useGlobalState } from '../../lib/DataState';
+import { MarkerMap } from '../components/MarkerMap'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const JobDetail: NextPage = () => {
     const { query: { id } } = useRouter()
+
+    const item = {
+        geoLat: -56.1645,
+        geoLong: -34.9011,
+        location: 'location'
+    }
 
     return (
         <>
@@ -49,7 +58,7 @@ const JobDetail: NextPage = () => {
                                                 </div>
                                                 <div className={styles.contract_type}>
                                                     <span>Contract type</span>
-                                                    <p>10/10/2020 </p>
+                                                    <p>Permanent</p>
                                                 </div>
                                             </div>
 
@@ -58,15 +67,28 @@ const JobDetail: NextPage = () => {
                                         <div className={styles.location}>
                                             <span>Address</span>
                                             <p>Such and such, 123 zone</p>
+                                            <Popup 
+                                            trigger={<p className={styles.map_trigger}>Click here to see map</p>} 
+                                            position="right center"
+                                            modal
+                                            nested
+                                            >
+                                            <MarkerMap geoLat={-56.1645} geoLong={-34.9011} />
+
+                                            </Popup>
                                         </div>
 
                                         <div className={styles.job_pack}>
                                             <span>Job pack</span>
-                                            <button onClick={() => { console.log('coming soon!') }}>Download</button>
+                                            <div>
+                                                <button onClick={() => { console.log('coming soon!') }}>Download</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className={styles.map_container}>
-                                        <span className={styles.map_placeholder}/>
+                                        <div className={styles.map_wrapper}>
+                                            <MarkerMap geoLat={-56.1645} geoLong={-34.9011} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +96,7 @@ const JobDetail: NextPage = () => {
                                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Blanditiis at id distinctio dolor culpa iusto, nulla quisquam, perspiciatis a nihil nesciunt magni iure quibusdam, ipsa aspernatur. Quas quo nisi unde!</p>
                             </div>
 
- 
+
 
                         </div>
                     </Container>

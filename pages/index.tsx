@@ -31,6 +31,8 @@ const Home: NextPage = () => {
   const router = useRouter()
   const { data, isLoading, runSearch, filteredOptions, setTopSearchTerm } = useGlobalState();
 
+  console.log('data',data);
+  
   const generateRandomNumber = (data: any) => Math.floor(Math.random() * data.length);
 
   const getTwoFeaturedPosts = (data: any) => {
@@ -97,9 +99,9 @@ const Home: NextPage = () => {
                 />
                 <div className={styles.top_searches}>
                   <p>Top searches: {
-                      topSearchTerms.map((item) => (
+                      topSearchTerms.map((item, i) => (
                         <>
-                        <span onClick={() => searchWithTopSearchTerm(item)}>{item}</span>
+                        <span onClick={() => searchWithTopSearchTerm(item)} key={i}>{item}</span>
                         </>
                       ))
                     }</p>
@@ -113,7 +115,8 @@ const Home: NextPage = () => {
               <Container>
                 <h2>Featured Jobs</h2>
                 <div className={styles.featured_jobs_inner}>
-                  {featuredData.map((item: any, i: number) => (
+                  {featuredData.map((item: any, i: number) => {
+                    return (
                     <div className={styles.block} key={i}>
                       <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={runThis}>
                         <CardContent>
@@ -123,10 +126,14 @@ const Home: NextPage = () => {
                               <span>Organisation</span>
                                 <p>{ item.organisationName ? item.organisationName : 'NHS'} </p>
                               </div>
-                            <div className={styles.closing_date}>
-                              <span>Closing date</span>
-                              <p>{new Date(item.closingDate).toLocaleDateString('en-US')} </p>
-                            </div>
+                              {
+                                item.closingDate &&
+                                <div className={styles.closing_date}>
+                                <span>Closing date</span>
+                                <p>{new Date(item.closingDate).toLocaleDateString('en-US')} </p>
+                              </div>
+                              }
+
                             <div className={styles.location}>
                               <span>Address</span>
                               <p>{item.location} </p>
@@ -134,7 +141,7 @@ const Home: NextPage = () => {
                           </div>
                         </CardContent>
                       </Card>
-                    </div>)
+                    </div>)}
 
                   )}
                 </div>
@@ -158,8 +165,12 @@ const Home: NextPage = () => {
                             {item.organisationName?.length ? 
                               <p className={styles.org}>{item.organisationName} </p> : 
                               <p>NHS</p>
-                            }                    
+                            }      
+                            {
+                              item.closingDate &&
                             <p className={styles.closing_date}>{new Date(item.closingDate).toLocaleDateString('en-GB')} </p>
+
+                            }              
                             <p className={styles.location}>{item.location} </p>
                           </div>
                         </CardContent>

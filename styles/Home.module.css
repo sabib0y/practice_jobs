@@ -362,8 +362,9 @@ font-size: 0;
 
 .main {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-
 
 .overall_wrapper{
   background-color: #f0f4f5;
@@ -409,6 +410,8 @@ font-size: 0;
   padding-left: 35px;
 }
 
+.job_detail .text_section .job_pack div:before,
+.job_detail .text_section p:before,
 .inner_block p:before{
   content: '';
   width: 25px;
@@ -422,12 +425,14 @@ font-size: 0;
   left: 0;
 }
 
+.job_detail .text_section .closing_date p:before,
 .inner_block .closing_date:before{
   background:url('../public/images/icon_clock.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
+.job_detail .text_section .location p:before, 
 .inner_block .location:before{
   background:url('../public/images/icon_location.png');
   background-size: contain;
@@ -505,13 +510,15 @@ font-size: 0;
   margin-bottom: 5px;
 }
 
+.job_detail .text_section span,
 .featured_jobs_inner .inner_block span{
   font-size: 14px;
   color: #4e4e4e;
   margin-left: 40px;
   font-family: 'Open Sans', sans-serif; 
-}
+} 
 
+.job_detail .text_section p,
 .featured_jobs_inner .inner_block p{
   font-size: 20px;
   margin-top: 3px;
@@ -697,7 +704,7 @@ font-size: 0;
 }
 
 .search_wrapper .search_bar_wrapper > div{
-  box-shadow: 0px 11px 9.7px 0.3px rgba(132, 154, 160, 0.2);
+  box-shadow: 0px 11px 9.7px 1px rgba(132, 154, 160, 0.2);
 }
 
 .search_wrapper h2{
@@ -733,14 +740,92 @@ font-size: 0;
   background: white;
   border-radius: 10px;
   padding: 20px;
-  margin-top: 40px;
+  margin: 40px 0;
 }
 
 .job_detail h1{
-  font-size: 40px;
   color: #063154;
-  margin: 0 0 10px;
+  margin: 0 0 20px;
+  font-size: 45px;
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  border-bottom: 2px solid #d0d0d0;
+  padding-bottom: 16px;
+} 
+
+.job_detail .job_pack > div{
+  padding-left: 40px;
+  position: relative;
 }
+
+.job_detail .job_pack button{
+  background: transparent;
+  border: 2px solid #102539;
+  padding: 6px 25px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.job_detail .text_section p{
+  position: relative;
+}
+
+.meta_block{
+  display: flex;
+  border-bottom: 2px solid #d0d0d0;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.map_container{
+  flex:1;
+  padding-left: 10%; 
+}
+
+.meta_block .heading_section > div{
+  display: flex;
+  position: relative;
+}
+
+.meta_block .heading_section .salary p:before{
+  background:url('../public/images/money_icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.meta_block .heading_section > div > div{
+  min-width: 200px;
+}
+
+.meta_block .heading_section > div > div:last-child{
+  margin-left: 50px;
+}
+
+.job_detail .text_section .job_pack div:before{
+  background:url('../public/images/download_btn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.job_detail .text_section .contract_type p:before{
+  background:url('../public/images/icon_job.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.job_detail .text_section p.map_trigger{
+  display: none;
+}
+
+.job_detail .text_section .map_trigger:before{
+  display: none;
+}
+
+.description_block p{
+  max-width: 80%;
+}
+
+
 /* end job detail page */
 
 
@@ -791,11 +876,13 @@ font-size: 35px;
   min-height: 40px;
 }
 
+.job_detail .text_section span,
 .featured_jobs_inner .inner_block span{
   font-size: 11px;
   margin-left: 32px;
 }
 
+.job_detail .text_section p,
 .featured_jobs_inner .inner_block p{
   font-size: 18px;
   margin-bottom: 0;
@@ -823,6 +910,29 @@ font-size: 35px;
   .top_searches{
     display: none;
     }
+
+    .job_detail .text_section .location p {
+      margin-bottom: 0;
+    }
+    
+    .job_detail .text_section p.map_trigger{
+      display: block;
+      font-size: 12px;
+      margin-top: 0;
+      line-height: normal;
+      color: grey;
+      margin-bottom: 20px;
+    } 
+
+    .job_detail .map_container{
+      display: none;
+    }
+
+.description_block p{
+  max-width: 100%;
+}
+
+    
 }
 
 /* everything below, mobile */
@@ -861,4 +971,6 @@ font-size: 35px;
   .pagination_wrapper button:nth-child(2){
     order: 3;
   }
+
+
 }
