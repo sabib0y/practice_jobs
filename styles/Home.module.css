@@ -129,13 +129,22 @@
 }
 
 .related_links_bg{
-  color:red;
+  background:url('../public/images/ad_slice2.png');
+  background-size:cover;
+  background-repeat: no-repeat;
+  height: 410px;
+  display: flex;
+  flex-direction: column;
+}
+
+.related_links_bg > div{
+  height: 100%;
 }
 
 .related_links h3{
   color: #063154;
     font-size: 27px;
-    margin: 30px 0 0;
+    margin: 30px 0 20px;
 }
 
 .related_links > div{
@@ -144,15 +153,34 @@
 }
 
 .related_links_inner{
-  background: #193c5d;
   color: white;
   font-size: 35px;
   border-radius: 10px;
-  display: flex;
+  display: flex;  
+  height: 100%;
 }
 
-.related_links_inner >  *{
-  flex-basis: 50%;
+.related_links_inner > div{
+  height: auto;
+  border: 2px solid white;
+  align-self: center;
+  padding: 26px;
+  width: 50%;
+  border-radius: 5px;
+  min-width: 300px;
+}
+
+.related_links_inner > div button{
+  background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 8px 18px;
+    border-radius: 3px;
+}
+
+.related_links_inner > div p{
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 /* search bar business */
@@ -163,9 +191,8 @@
   margin-bottom: 20px;
   display: flex;
   border-radius: 6px;
+  overflow: hidden;
 }
-
-
 
 .search_bar .region_field fieldset,
 .search_bar .category_field fieldset{
@@ -294,12 +321,18 @@ padding-left: 0;
   margin-left: auto;
 }
 
+.search_bar .text_field > div:after,
+.search_bar .text_field > div:before{
+  display: none;
+}
+
 @media only screen and (max-width: 980px) {
   .search_bar .search_btn{
 font-size: 0;
   }
 }
 
+/* searchbar switch */
 @media only screen and (max-width: 745px) {
   .search_bar > .text_field{
     width: 100%;
@@ -317,6 +350,18 @@ font-size: 0;
     background: #193c5d;
     position: absolute;
   }
+
+.search_bar > .select_wrappers:before{
+  position: absolute;
+    width: 95%;
+    height: 2px;
+    background: #063154;
+    top: 0;
+    left: 50%;
+    content: '';
+    display: block;
+    transform: translateX(-50%);
+}
 
   .search_bar{
     flex-direction: column;
@@ -345,11 +390,6 @@ font-size: 0;
   background: transparent;
 }
 
-.search_bar .text_field > div:after,
-.search_bar .text_field > div:before{
-  display: none;
-}
-
 .search_bar .btn_icon{
   content: '';
   width: 30px;
@@ -361,8 +401,7 @@ font-size: 0;
   margin-left: 10px;
 }
 
-
-/* end search bar youtube */
+/* end search bar */
 
 .main {
   min-height: 100vh;
@@ -384,14 +423,6 @@ font-size: 0;
   flex-basis: 33.33%;
   padding: 10px;
 }
-
-@media only screen and (max-width: 980px) {
-  .block{
-    flex-basis: 50%;
-    padding: 10px;
-  }
-}
-
 
 .block_wrapper .block .MuiCardContent-root{
   padding: 15px;
@@ -838,33 +869,33 @@ font-size: 0;
 /* end job detail page */
 
 
-@media only screen and (max-width: 715px) {
+/* desktop and up */
+@media only screen and (min-width: 801px) {
 
-  .featured_jobs_inner{
-    flex-direction: column;
+}
+/* desktop and up */
+
+
+@media only screen and (max-width: 980px) {
+  .block{
+    flex-basis: 50%;
+    padding: 10px;
   }
-
-  .featured_jobs_inner > div{
-    width: 100%;
-    flex-basis: 100%;
-  }
-
-  .featured_jobs_inner > div > div{
-    padding-bottom: 10px;
-  }
-
-  .latest_vacancies .inner_block p:not(:first-child){
-    display: none;
-    }
-
-    .search_wrapper .search_bar_wrapper{
-      display: none;
-    }
 }
 
 @media only screen and (max-width: 800px) {
 .hero{
   height: auto
+}
+
+.search_bar > .text_field:before{
+  position: absolute;
+  content: '';
+  width: 80%;
+  height: 2px;
+  background: #000;
+  bottom:0;
+  left: 20%;
 }
 
 .hero_text h1{
@@ -954,12 +985,60 @@ font-size: 35px;
   margin-left: 0;
 }
 
-    
+.related_links_bg{
+  height: 280px;
+  } 
+}
+
+
+@media only screen and (max-width: 715px) {
+  .related_links_inner > div{
+    width: 80%;
+  }
+
+  .featured_jobs_inner{
+    flex-direction: column;
+  }
+
+  .featured_jobs_inner > div{
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .featured_jobs_inner > div > div{
+    padding-bottom: 10px;
+  }
+
+  .latest_vacancies .inner_block p:not(:first-child){
+    display: none;
+    }
+
+    .search_wrapper .search_bar_wrapper{
+      display: none;
+    }
 }
 
 /* everything below, mobile */
 
 @media only screen and (max-width: 600px) {
+
+.search_bar > .select_wrappers > div,
+  .related_links_inner > div{
+    width: 100%;
+  }
+
+.select_wrappers > div:before{
+  height: 2px;
+  width: 95%;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+}
+
+.related_links_bg{
+height: 240px;
+}
+
   .search_bar_wrapper{
     margin: 0 -16px;
     background: rgba(0, 0, 0, 0.7);

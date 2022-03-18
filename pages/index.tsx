@@ -184,12 +184,15 @@ const Home: NextPage = () => {
               </div>
             </Container>
 
-            {/* <div className={styles.related_links}>
+            <div className={styles.related_links}>
+            <Container>
+
+            <h3>Related links</h3>
+            </Container>
+
               <div className={styles.related_links_bg}>
             <Container>
-              <h3>Related links</h3>
               <div className={styles.related_links_inner}>
-                <span className={styles.image}/>
                 <div>
                   <p>NHS Inform</p>
                   <button>Read More</button>
@@ -198,7 +201,7 @@ const Home: NextPage = () => {
             </Container>
             </div>
               
-            </div> */}
+            </div>
 
           </main>
 
