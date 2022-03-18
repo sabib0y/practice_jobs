@@ -9,9 +9,9 @@ import CardContent from '@mui/material/CardContent';
 
 import Container from '@mui/material/Container';
 import styles from '../styles/Home.module.css';
-import SearchBar from './components/SearchBar'
+import SearchBar from '../components/SearchBar'
 
-import Logo from './components/Logo';
+import Logo from '../components/Logo';
 import { useGlobalState } from '../lib/DataState';
 
 const Home: NextPage = () => {
@@ -185,6 +185,7 @@ const Home: NextPage = () => {
             </Container>
 
             {/* <div className={styles.related_links}>
+              <div className={styles.related_links_bg}>
             <Container>
               <h3>Related links</h3>
               <div className={styles.related_links_inner}>
@@ -195,6 +196,7 @@ const Home: NextPage = () => {
                 </div>
               </div>
             </Container>
+            </div>
               
             </div> */}
 

@@ -3,7 +3,7 @@
 }
 
 .hero{
-  background:url('../public/images/hero.png');
+  background:url('../public/images/ad_slice.png');
   background-size:cover;
   background-repeat: no-repeat;
   height: 410px;
@@ -126,6 +126,10 @@
 
 .related_links{
   background: #d5e8f0;
+}
+
+.related_links_bg{
+  color:red;
 }
 
 .related_links h3{
