@@ -1,4 +1,5 @@
-
+    export const topSearchTerms = ['Medical','GP','Dental','Nurse', 'Locum','Admin']
+    
     export const regions = [
         {
             label:'Ayrshire & Arran',

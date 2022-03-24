@@ -9,21 +9,61 @@ import Logo from '../components/Logo'
 import { useGlobalState } from '../lib/DataState';
 import Pagination from '../components/Pagination';
 import { useRouter } from 'next/router';
+import Footer from '../components/Footer';
+import { Popup } from 'reactjs-popup';
+import CloseIcon from '@mui/icons-material/Close';
 
 const key = 'a44004e391a0422c9d41dc94bdc128af'
 const url = 'https://api.nhs.scot/JobsSearch/v1.0.0/Vacancy/GetAllVacs'
 
+
+interface Props{
+  open: boolean,
+  setOpen: (e:boolean) => void
+  onInputChange: any
+  searchParams: any
+  clickHandler: any
+}
+
+const ControlledPopup = ({open, setOpen, onInputChange, searchParams, clickHandler}:Props) => {
+  const closeModal = () => setOpen(false);
+
+  return (
+    <div>
+      <Popup open={open} 
+          position="center center" 
+      onClose={closeModal}>
+    <div className={styles.popup_search}>
+        <span onClick={closeModal}>
+        <CloseIcon/>
+        </span>
+      <SearchBar
+        onInputChange={onInputChange}
+        searchParams={searchParams}
+        clickHandler={clickHandler}
+        />
+    </div>
+
+      </Popup>
+    </div>
+
+  );
+};
+
+
+
 const Search: NextPage = () => {
 
   const [pageNumber, setPageNumber] = useState(1)
+  const [open, setOpen] = useState(false)
   const [paginatedResults, setPaginatedResults] = useState<any>([])
 
-  const { data: unfilteredData, isLoading, runSearch, searchOptions, filteredOptions, setSelectedJob } = useGlobalState();
+  const { data: unfilteredData, isLoading, runSearch, searchOptions, filteredOptions, goToPage } = useGlobalState();
   const data = filteredOptions.length ? filteredOptions : unfilteredData
 
   const router = useRouter()
   const perPage = 12
-  
+
   const { title, nhsBoard, jobFamily } = searchOptions
   let pageCount = Math.ceil(data.length / perPage)
   pageCount = pageCount === 0 ? 1 : pageCount
@@ -38,7 +78,7 @@ const Search: NextPage = () => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value })
   }
 
-  const isDateValid = (date:any) => !!date?.length
+  const isDateValid = (date: any) => !!date?.length
   // const isDateValid = (date:any) => /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date) ? date : !!date.length
 
   const getPaginatedResults = () => {
@@ -54,7 +94,7 @@ const Search: NextPage = () => {
 
   useEffect(() => {
     router.prefetch('/jobdetail/')
-  }, [])
+  }, [router])
 
   if (isLoading) return <p>Loading...</p>
   if (!data) return <p>No profile data</p>
@@ -63,7 +103,19 @@ const Search: NextPage = () => {
     return (
       <>
         <div className={styles.overall_wrapper}>
-
+          <Container
+           onClick={() => setOpen(!open)}
+            className={styles.mobile_filter}
+            >
+            <span>Show search filters</span>
+          </Container>
+          <ControlledPopup 
+            open={open}
+            setOpen={setOpen}
+            onInputChange={onInputChange}
+            searchParams={searchParams}
+            clickHandler={clickHandler}
+          />
           <main className={styles.main}>
             <div className={styles.alt_header}>
               <Logo />
@@ -93,7 +145,7 @@ const Search: NextPage = () => {
 
                   {getPaginatedResults()?.map((item: any, i: number) => (
                     <div className={styles.block} key={i}>
-                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => {setSelectedJob(item)}}>
+                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item, 'jobdetail')}}>
                         <CardContent>
                           <h4>{item.title} </h4>
                           <div className={styles.inner_block}>
@@ -113,8 +165,9 @@ const Search: NextPage = () => {
           </main>
           <Container>
 
-          <Pagination page={pageNumber} pageCount={pageCount} setPageNumber={setPageNumber} />
+            <Pagination page={pageNumber} pageCount={pageCount} setPageNumber={setPageNumber} />
           </Container>
+          <Footer />
 
         </div>
 

@@ -1,5 +1,7 @@
 import router from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
+import { practiceJobsUrl } from "../utils/fetchUrls";
+import { key } from "./constants";
 
 const LocalStateContext = createContext<any>({})
 
@@ -7,24 +9,28 @@ const LocalStateProvider = LocalStateContext.Provider
 
 
 function DataStateProvider({ children }: any) {
-    const [data, setData] = useState([])
-    const [isLoading, setLoading] = useState(false)
-    const [searchOptions, setSearchOptions] = useState({})
-    const [filteredOptions, setFilteredOptions] = useState([])
-  const [isTopSearchSet, setIsTopSearchSet] = useState(false)
+  const [data, setData] = useState([])
+  const [isLoading, setLoading] = useState(false)
+  const [searchOptions, setSearchOptions] = useState({})
+  const [filteredOptions, setFilteredOptions] = useState([])
   const [topSearchTerm, setTopSearchTerm] = useState('')
   const [selectedJob, setSelectedJob] = useState<any>({})
   const [jobDetailInfo, setJobDetailInfo] = useState<any>({})
 
 
     const elasticIndex = 'practicejobs'
-    const maxedOutLimit = 3000
+    const maxedOutJobLimit = 3000
+    const url = `https://api.nhs.scot/JobsSearch/v1.0.0/ElasticJobsSearch/GetVacancySummaries`
+    const allVacsUrl = `${url}/${elasticIndex}/${maxedOutJobLimit}`
 
-    const key = 'a44004e391a0422c9d41dc94bdc128af'
-    const practiceJobsUrl = (ref:string) => `https://api.nhs.scot/JobsSearch/v1.0.0/ElasticJobsSearch/GetVacancy/practicejobs/${ref}`
-    const url = `https://api.nhs.scot/JobsSearch/v1.0.0/ElasticJobsSearch/GetVacancySummaries/${elasticIndex}/${maxedOutLimit}`
+    const defaultSearchOptions = {
+      title: '',
+      nhsBoard: '',
+      jobFamily: '',
+    }
 
-    const runSearch = (obj: any) => {
+    const runSearch = (searchObj: any) => {
+      const obj = searchObj !== undefined ? searchObj : defaultSearchOptions
         const newObj: any = {}
         let newCat = ''
         for (const item in obj) {
@@ -43,27 +49,31 @@ function DataStateProvider({ children }: any) {
         let filteredResults = data;
     
         for (let i = 0; i < searchOptions.length; i++) {
+          const key = searchOptions[i][0]
+          const value = searchOptions[i][1]
+
           filteredResults = filteredResults.filter((element: any) => {
-            if (searchOptions[i][0] === 'title') {
-              const lowerCaseData = element[searchOptions[i][0]].toLowerCase()
-              const lowerCaseTitle = searchOptions[i][1].toLowerCase()
+
+            if (key === 'title') {
+              const lowerCaseData = element[key].toLowerCase()
+              const lowerCaseTitle = value.toLowerCase()
               if (lowerCaseData.includes(lowerCaseTitle)) {
                 return element
               }
-            } else if (searchOptions[i][0] === 'jobFamily') {
-              if (searchOptions[i][1].includes('&')) {
-                const convertedCategory = searchOptions[i][1].replace('&', 'and');
-                return element[searchOptions[i][0]] === convertedCategory || element[searchOptions[i][0]] === searchOptions[i][1]
+            } else if (key === 'jobFamily') {
+              if (value.includes('&')) {
+                const convertedCategory = value.replace('&', 'and');
+                return element[key] === convertedCategory || element[key] === value
               }
-            } else if (searchOptions[i][0] === 'nhsBoard') {
-              const lowerCaseData = element[searchOptions[i][0]].toLowerCase()
-              const lowerCaseBoard = searchOptions[i][1].toLowerCase()
+            } else if (key === 'nhsBoard') {
+              const lowerCaseData = element[key].toLowerCase()
+              const lowerCaseBoard = value.toLowerCase()
               if (lowerCaseData.includes(lowerCaseBoard)) {
                 return element
               }
             }
     
-            return element[searchOptions[i][0]] === searchOptions[i][1]
+            return element[key] === value
           })
         }
 
@@ -74,24 +84,18 @@ function DataStateProvider({ children }: any) {
         })
       }
 
-      useEffect(() => {
-        if(topSearchTerm.length){
-          let obj = {
-            title: topSearchTerm,
-            nhsBoard: '',
-            jobFamily: '',
-          }
-
-          runSearch(obj)
-        }
-      },[topSearchTerm])
+      const goToPage = (item: any, page: string) => {
+        const path = item.reference ? item.reference : item.id
+        router.push({
+          pathname: `/${page}/${path}`
+        })
+        
+      }
 
       useEffect(() => {
           if(selectedJob.jobFamily){
             let ref = selectedJob?.reference?.length? selectedJob.reference : selectedJob.id
             
-          // setLoading(true)
-
           fetch(practiceJobsUrl(ref), {
             headers: {
               'Ocp-Apim-Subscription-Key': key
@@ -99,49 +103,30 @@ function DataStateProvider({ children }: any) {
           })
             .then((res) => res.json())
             .then((data) => {
-              console.log('return', data);
               setJobDetailInfo(data[0])
-              
-              // setLoading(false)
-              // setData(data)                 
-            })
+            }).catch(function() {
+              console.log("error");
+          });
         }
     
       },[selectedJob])
-
-      useEffect(() => {
-        console.log('jobDetailInfo',jobDetailInfo);
-        
-        if(jobDetailInfo?.title){
-
-        router.push({
-          pathname: '/jobdetail'
-        })
-      }
-
-      }, [jobDetailInfo])
 
 
     useEffect(() => {
         setLoading(true)
 
-          fetch(url, {
+          fetch(allVacsUrl, {
             headers: {
               'Ocp-Apim-Subscription-Key': key
             }
           })
             .then((res) => res.json())
-            .then((data) => {
-              //update local storage
-              const dataInfo = {
-                data,
-                time: Date.now()
-              }
-    
-              // sessionStorage.setItem('data', JSON.stringify(dataInfo));
+            .then((data) => {    
               setLoading(false)
               setData(data)                 
-            })
+            }).catch(function() {
+              console.log("error");
+          });
     
       }, [])
 
@@ -152,10 +137,10 @@ function DataStateProvider({ children }: any) {
         setSearchOptions,
         runSearch,
         filteredOptions,
-        setIsTopSearchSet,
         setTopSearchTerm,
         setSelectedJob,
         jobDetailInfo,
+        goToPage,
     } } >
         { children }
         </LocalStateProvider>
@@ -163,7 +148,6 @@ function DataStateProvider({ children }: any) {
 }
 
 function useGlobalState(){
-    //consumer
     const all = useContext(LocalStateContext);
     return all;
 }

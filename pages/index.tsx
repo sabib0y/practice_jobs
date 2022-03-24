@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'
+import { useState } from 'react';
 import Link from 'next/link'
 
 import Card from '@mui/material/Card';
@@ -13,14 +12,13 @@ import SearchBar from '../components/SearchBar'
 
 import Logo from '../components/Logo';
 import { useGlobalState } from '../lib/DataState';
+import Footer from '../components/Footer';
+import { relatedLinksData } from '../lib/relatedLinksData';
+import { topSearchTerms } from '../utils/filterOptions';
 
 const Home: NextPage = () => {
-
   const [featuredData, setFeaturedData] = useState([])
-  const [pageNumber, setPageNumber] = useState(1)
   const [isDataPulled, setIsDataPulled] = useState(false)
-  const [postNumber] = useState(5)
-
   const [searchParams, setSearchParams] = useState({
     title: '',
     nhsBoard: '',
@@ -28,31 +26,23 @@ const Home: NextPage = () => {
   });
 
   const [paginatedPosts, setPaginatedPosts] = useState([])
-  const router = useRouter()
-  const { data, isLoading, runSearch, filteredOptions, setTopSearchTerm } = useGlobalState();
+  const { data, isLoading, runSearch, filteredOptions, goToPage } = useGlobalState();
 
   const generateRandomNumber = (data: any) => Math.floor(Math.random() * data.length);
-
-  const getTwoFeaturedPosts = (data: any) => {
-    let arr = [];
-    arr.push(data[generateRandomNumber(data)])
-    arr.push(data[generateRandomNumber(data)])
-    return arr
-  }
-
-  const goToJobPage = () => router.push('/search')
-  const runThis = () => { console.log('ping') }
-  const clickHandler = () => {runSearch(searchParams)}
+  const generateRelatedLink = (links:any) => links[generateRandomNumber(links)]
+  const getTwoFeaturedPosts = (data: any) => [1,2].map(i => data[generateRandomNumber(data)])
 
   const onInputChange = (e: any) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value })
   }
 
   const searchWithTopSearchTerm = (searchTerm: string) => {
-    setTopSearchTerm(searchTerm)
+    runSearch({
+      title:searchTerm,
+      nhsBoard: '',
+      jobFamily: '',
+    })
   }
-
-  const topSearchTerms = ['Medical','GP','Dental','Nurse', 'Locum','Admin']
 
   if(data.length && !isDataPulled){
     const featuredPosts: any = getTwoFeaturedPosts(data)
@@ -66,6 +56,8 @@ const Home: NextPage = () => {
   if (!data) return <p>No profile data</p>
 
   if (data.length) {
+    const rellatedLink = generateRelatedLink(relatedLinksData)
+    
     return (
       <>
         <Head>
@@ -89,10 +81,11 @@ const Home: NextPage = () => {
                   </p>
 
                 </div>
+                <div className={styles.search_bg}>
                 <SearchBar
                   onInputChange={onInputChange}
                   searchParams={searchParams}
-                  clickHandler={clickHandler}
+                  clickHandler={() => {runSearch(searchParams)}}
                   filteredOptions={filteredOptions}
                 />
                 <div className={styles.top_searches}>
@@ -103,6 +96,8 @@ const Home: NextPage = () => {
                         </>
                       ))
                     }</p>
+                </div>
+
                 </div>
               </Container>
 
@@ -116,7 +111,7 @@ const Home: NextPage = () => {
                   {featuredData.map((item: any, i: number) => {
                     return (
                     <div className={styles.block} key={i}>
-                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={runThis}>
+                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item,'jobdetail') }}>
                         <CardContent>
                           <h4>{item.title} </h4>
                           <div className={styles.inner_block}>
@@ -156,7 +151,7 @@ const Home: NextPage = () => {
 
                   {paginatedPosts.map((item: any, i: number) => (
                     <div className={styles.block} key={i}>
-                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={runThis}>
+                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item,'jobdetail') }}>
                         <CardContent>
                           <h4>{item.title} </h4>
                           <div className={styles.inner_block}>
@@ -178,7 +173,7 @@ const Home: NextPage = () => {
 
                   ))}
                   <div className={styles.btn_wrapper}>
-                    <button onClick={goToJobPage}>Show all vacancies </button>
+                    <button onClick={runSearch}>Show all vacancies </button>
                   </div>
                 </div>
               </div>
@@ -192,12 +187,25 @@ const Home: NextPage = () => {
 
               <div className={styles.related_links_bg}>
             <Container>
-              <div className={styles.related_links_inner}>
+              <div className={styles.related_links_wrapper}>
+
+              {
+              <a 
+              className={styles.related_links_inner} 
+              href={rellatedLink.link}
+              rel="noopener noreferrer"
+              >
                 <div>
-                  <p>NHS Inform</p>
-                  <button>Read More</button>
+                  <h3>{rellatedLink.heading}</h3>
+                  <p>{rellatedLink.body}</p>
+                  <button>Find out more</button>
                 </div>
+              </a>
+              }
+
+
               </div>
+
             </Container>
             </div>
               
@@ -205,12 +213,7 @@ const Home: NextPage = () => {
 
           </main>
 
-
-          <footer className={styles.footer}>
-              <Logo />
-
-
-          </footer>
+          <Footer/>
         </div>
 
       </>

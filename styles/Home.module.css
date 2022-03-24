@@ -9,6 +9,7 @@
   height: 410px;
   display: flex;
   flex-direction: column;
+  background-attachment: fixed;
 }
 
 .hero h1{
@@ -135,6 +136,7 @@
   height: 410px;
   display: flex;
   flex-direction: column;
+  background-attachment: fixed;
 }
 
 .related_links_bg > div{
@@ -152,22 +154,29 @@
   flex-direction: column;
 }
 
-.related_links_inner{
-  color: white;
+.related_links_inner h3{
   font-size: 35px;
-  border-radius: 10px;
-  display: flex;  
+  font-family: 'Epilogue', sans-serif;
+  color: white;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.related_links_wrapper{
+  display: flex;
   height: 100%;
 }
 
-.related_links_inner > div{
+.related_links_inner{
   height: auto;
   border: 2px solid white;
   align-self: center;
   padding: 26px;
   width: 50%;
-  border-radius: 5px;
+  color: white;
+  border-radius: 10px;
   min-width: 300px;
+  transition: all 0.5s;
 }
 
 .related_links_inner > div button{
@@ -176,6 +185,13 @@
     border: 1px solid white;
     padding: 8px 18px;
     border-radius: 3px;
+    cursor: pointer;
+}
+
+.related_links_inner:hover{
+  border-color: #49a4f2;
+  box-shadow: 0 6px 9.7px 0.3px rgb(0 0 0 / 50%);
+  text-decoration: none;
 }
 
 .related_links_inner > div p{
@@ -232,7 +248,7 @@ padding-left: 0;
 .search_bar > .select_wrappers > div:after,
 .search_bar > .text_field:after{
   content: '';
-  background:url('../public/images/icon_job.png');
+  background:url('../public/images/icon_job.svg');
   width: 30px;
   height: 30px;
   background-repeat: no-repeat;
@@ -266,11 +282,13 @@ padding-left: 0;
 }
 
 .search_bar > .select_wrappers .region_field:after{
-  background:url('../public/images/icon_region.png');
+  background:url('../public/images/icon_region.svg');
+  background-size: cover;
 }
 
 .search_bar > .select_wrappers .category_field:after{
-  background:url('../public/images/icon_cat.png');
+  background:url('../public/images/icon_cat.svg');
+  background-size: cover;
 }
 
 .search_bar > div:first-child:before{
@@ -282,11 +300,11 @@ padding-left: 0;
 }
 
 .search_bar > div svg{
-  background:url('../public/images/icon_dropdown.png');
+  background:url('../public/images/icon_dropdown.svg');
   width: 20px;
   height: 12px;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: contain;
   margin-top: 7px;
   right: 15px;
 }
@@ -300,9 +318,16 @@ padding-left: 0;
   width: 25%;
 }
 
+.search_bar .category_field > div,
+.search_bar .region_field > div{
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 600;
+  height: 100%;
+}
+
 .search_bar .category_field > div fieldset,
 .search_bar .region_field > div fieldset{
-  border: none
+  border: none;
 }
 
 .search_bar .search_btn{
@@ -326,14 +351,66 @@ padding-left: 0;
   display: none;
 }
 
+.overall_wrapper .mobile_filter{
+  display: none;
+}
+
+.mobile_filter span{
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mobile_filter span:before{
+  content: '';
+  width: 31px;
+  height: 29px;
+  background:url('../public/images/search_filter.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-size: 100%;
+  margin-right: 10px;
+}
+
 @media only screen and (max-width: 980px) {
   .search_bar .search_btn{
-font-size: 0;
+    font-size: 0;
   }
 }
 
 /* searchbar switch */
 @media only screen and (max-width: 745px) {
+.overall_wrapper .mobile_filter{
+    display: block;
+  }
+
+  .popup_search{
+    position: relative;
+  }
+
+  .popup_search > span{
+    position: absolute;
+    right: 0;
+    top: -40px;
+    background: white;
+    padding: 5px;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    border-radius: 50%;
+  }
+
+  .popup_search > span svg{
+    width: 100%;
+    height: 100%;
+  }
+
+.related_links_inner h3{
+  letter-spacing: 0.08rem;
+  font-size: 27px;
+}
   .search_bar > .text_field{
     width: 100%;
     height: 50px;
@@ -395,7 +472,7 @@ font-size: 0;
   width: 30px;
   height: 30px;
   display: relative;
-  background:url('../public/images/icon_search.png');
+  background:url('../public/images/icon_search.svg');
   background-repeat: no-repeat;
   background-size: cover;
   margin-left: 10px;
@@ -411,6 +488,7 @@ font-size: 0;
 
 .overall_wrapper{
   background-color: #f0f4f5;
+  overflow: hidden;
 }
 
 .block_wrapper{
@@ -449,9 +527,9 @@ font-size: 0;
 .job_detail .text_section p:before,
 .inner_block p:before{
   content: '';
-  width: 25px;
-  height: 25px;
-  background:url('../public/images/icon_property.png');
+  width: 21px;
+  height: 21px;
+  background:url('../public/images/icon_property.svg');
   background-size: contain;
   background-repeat: no-repeat;
   margin-right: 8px;
@@ -460,16 +538,27 @@ font-size: 0;
   left: 0;
 }
 
+.job_detail .text_section .job_pack div:before,
+.job_detail .text_section p:before{
+  height: 30px;
+  width: 30px;
+}
+
+.organisation_page_link{
+  text-decoration: underline;
+  text-decoration-color: grey;
+}
+
 .job_detail .text_section .closing_date p:before,
 .inner_block .closing_date:before{
-  background:url('../public/images/icon_clock.png');
+  background:url('../public/images/icon_clock.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .job_detail .text_section .location p:before, 
 .inner_block .location:before{
-  background:url('../public/images/icon_location.png');
+  background:url('../public/images/icon_location.svg');
   background-size: contain;
   background-repeat: no-repeat;
   width: 30px;
@@ -511,7 +600,7 @@ font-size: 0;
 }
 
 .featured_jobs .inner_block .location p:before{
-  background:url('../public/images/icon_location.png');
+  background:url('../public/images/icon_location.svg');
   background-size: contain;
   background-repeat: no-repeat;
   width: 30px;
@@ -650,6 +739,7 @@ font-size: 0;
 }
 
 .pagination_wrapper button:hover{
+  color: #49a4f2;
   border-color: #49a4f2;
 }
 
@@ -827,7 +917,7 @@ font-size: 0;
 }
 
  .heading_section .salary p:before{
-  background:url('../public/images/money_icon.png');
+  background:url('../public/images/money_icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -841,13 +931,13 @@ font-size: 0;
 }
 
 .job_detail .text_section .job_pack div:before{
-  background:url('../public/images/download_btn.png');
+  background:url('../public/images/download_btn.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .job_detail .text_section .contract_type p:before{
-  background:url('../public/images/icon_job.png');
+  background:url('../public/images/icon_job.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -880,6 +970,10 @@ font-size: 0;
   .block{
     flex-basis: 50%;
     padding: 10px;
+  }
+
+  .related_links_inner{
+    width: 80%;
   }
 }
 
@@ -929,6 +1023,12 @@ font-size: 35px;
   padding-left: 32px;
 }
 
+.job_detail .text_section .job_pack div:before,
+.job_detail .text_section p:before{
+  height: 26px;
+  width: 26px;
+}
+
 .featured_jobs .inner_block p:before{
   width: 28px;
   height: 26px;
@@ -945,12 +1045,25 @@ font-size: 35px;
   .search_wrapper > p,
 .latest_vacancies > p{
   font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.latest_vacancies > p{
   margin: 0;
 }
 
   .top_searches{
-    display: none;
+    padding-bottom: 0;
     }
+
+    .top_searches p{
+      margin-bottom: ;
+    }
+
+  .top_searches p > span:before{
+    background: transparent;
+
+  }
 
     .job_detail .text_section .location p {
       margin-bottom: 0;
@@ -985,15 +1098,13 @@ font-size: 35px;
   margin-left: 0;
 }
 
-.related_links_bg{
-  height: 280px;
-  } 
 }
 
 
 @media only screen and (max-width: 715px) {
-  .related_links_inner > div{
-    width: 80%;
+  .related_links_inner{
+    width: 100%;
+    padding: 20px;
   }
 
   .featured_jobs_inner{
@@ -1016,6 +1127,7 @@ font-size: 35px;
     .search_wrapper .search_bar_wrapper{
       display: none;
     }
+    
 }
 
 /* everything below, mobile */
@@ -1023,7 +1135,7 @@ font-size: 35px;
 @media only screen and (max-width: 600px) {
 
 .search_bar > .select_wrappers > div,
-  .related_links_inner > div{
+  .related_links_inner{
     width: 100%;
   }
 
@@ -1035,11 +1147,7 @@ font-size: 35px;
   top: 0;
 }
 
-.related_links_bg{
-height: 240px;
-}
-
-  .search_bar_wrapper{
+  .search_bg{
     margin: 0 -16px;
     background: rgba(0, 0, 0, 0.7);
     padding: 26px;
@@ -1072,6 +1180,4 @@ height: 240px;
   .pagination_wrapper button:nth-child(2){
     order: 3;
   }
-
-
 }
