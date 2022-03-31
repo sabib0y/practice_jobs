@@ -30,13 +30,10 @@ const JobDetail: NextPage = () => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log('return', data);
 
-                    //   const filteredData = data.find((item:any) => item.location === location)
-                    //   console.log({filteredData});
                     setJobToDisplay(data[0])
                     setIsDataPulled(true)
-                }).catch(function() {
+                }).catch(function () {
                     console.log("error");
                 });
         }
@@ -45,9 +42,22 @@ const JobDetail: NextPage = () => {
 
     if (isDataPulled) {
 
-        console.log('jobToDisplayvadfad', jobToDisplay);
+        const {
+            advertType,
+            parentId,
+            description,
+            geoLong,
+            geoLat,
+            organisationName,
+            title,
+            postedDate,
+            closingDate,
+            salary,
+            contractDuration,
+            location,
+            link
+        } = jobToDisplay
 
-        const { advertType, parentId, description, geoLong, geoLat, organisationName, title, postedDate, closingDate, salary, contractDuration, location } = jobToDisplay
         let setOrganisationName = '';
 
         if (advertType) {
@@ -55,8 +65,6 @@ const JobDetail: NextPage = () => {
         } else {
             setOrganisationName = organisationName
         }
-
-        console.log('setOrganisationName', setOrganisationName, organisationName);
 
         return (
             <>
@@ -80,25 +88,24 @@ const JobDetail: NextPage = () => {
                                                     <p>{setOrganisationName}</p>
                                                 }
                                             </div>
-                                            <div className={styles.heading_section}>
-                                                <div className={styles.meta_row}>
-                                                    <div className={styles.closing_date}>
-                                                        <span>Posted on</span>
-                                                        {postedDate ?
-                                                            <p>{postedDate}</p> :
-                                                            <p>NA</p>
-                                                        }
-                                                    </div>
-                                                    <div className={styles.closing_date}>
-                                                        <span>Closing date</span>
-                                                        {closingDate ?
-                                                            <p>{closingDate}</p> :
-                                                            <p>NA</p>
-                                                        }
-                                                    </div>
-                                                </div>
+                                            {closingDate &&
 
-                                            </div>
+                                                <div className={styles.heading_section}>
+                                                    <div className={styles.meta_row}>
+                                                        {postedDate &&
+                                                            <div className={styles.closing_date}>
+                                                                <span>Posted on</span>
+                                                                <p>{postedDate}</p>
+                                                            </div>
+                                                        }
+                                                        <div className={styles.closing_date}>
+                                                            <span>Closing date</span>
+                                                            <p>{closingDate}</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            }
                                             <div className={styles.meta_row}>
                                                 {
                                                     salary &&
@@ -123,22 +130,25 @@ const JobDetail: NextPage = () => {
                                                 {
                                                     geoLat?.length &&
                                                     <Popup
-                                                    trigger={<p className={styles.map_trigger}>Click here to see map</p>}
-                                                    position="center center"
-                                                    modal
-                                                    nested
+                                                        trigger={<p className={styles.map_trigger}>Click here to see map</p>}
+                                                        position="center center"
+                                                        modal
+                                                        nested
                                                     >
                                                         <MarkerMap geoLat={geoLat} geoLong={geoLong} />
                                                     </Popup>
                                                 }
                                             </div>
-
-                                            {/* <div className={styles.job_pack}>
-                                            <span>Job pack</span>
-                                            <div>
-                                                <button onClick={() => { console.log('coming soon!') }}>Download</button>
-                                            </div>
-                                        </div> */}
+                                            {
+                                                link?.length &&
+                                                <div className={styles.link}>
+                                                    <span>Link</span>
+                                                    <p><a
+                                                        href={link}
+                                                        rel="noopener noreferrer"
+                                                    >Click here to apply</a></p>
+                                                </div>
+                                            }
                                         </div>
                                         {
                                             geoLat?.length &&
@@ -156,8 +166,6 @@ const JobDetail: NextPage = () => {
                                             __html: description
                                         }}></div>
                                 </div>
-
-
 
                             </div>
                         </Container>

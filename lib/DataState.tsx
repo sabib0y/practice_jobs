@@ -2,6 +2,8 @@ import router from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { practiceJobsUrl } from "../utils/fetchUrls";
 import { key } from "./constants";
+import useSWR from "swr";
+
 
 const LocalStateContext = createContext<any>({})
 
@@ -9,8 +11,6 @@ const LocalStateProvider = LocalStateContext.Provider
 
 
 function DataStateProvider({ children }: any) {
-  const [data, setData] = useState([])
-  const [isLoading, setLoading] = useState(false)
   const [searchOptions, setSearchOptions] = useState({})
   const [filteredOptions, setFilteredOptions] = useState([])
   const [topSearchTerm, setTopSearchTerm] = useState('')
@@ -28,7 +28,8 @@ function DataStateProvider({ children }: any) {
       nhsBoard: '',
       jobFamily: '',
     }
-
+    
+      
     const runSearch = (searchObj: any) => {
       const obj = searchObj !== undefined ? searchObj : defaultSearchOptions
         const newObj: any = {}
@@ -89,7 +90,6 @@ function DataStateProvider({ children }: any) {
         router.push({
           pathname: `/${page}/${path}`
         })
-        
       }
 
       useEffect(() => {
@@ -111,28 +111,21 @@ function DataStateProvider({ children }: any) {
     
       },[selectedJob])
 
+    const fetcher = (url:string) => fetch(allVacsUrl, {
+      headers: {
+        'Ocp-Apim-Subscription-Key': key
+      }
+    }).then((res) => res.json())
 
-    useEffect(() => {
-        setLoading(true)
-
-          fetch(allVacsUrl, {
-            headers: {
-              'Ocp-Apim-Subscription-Key': key
-            }
-          })
-            .then((res) => res.json())
-            .then((data) => {    
-              setLoading(false)
-              setData(data)                 
-            }).catch(function() {
-              console.log("error");
-          });
-    
-      }, [])
+    const { data, error } = useSWR(
+      url,
+      fetcher
+    );
 
     return <LocalStateProvider value= { {
         data,
-        isLoading,
+        error,
+        fetcher,
         searchOptions,
         setSearchOptions,
         runSearch,

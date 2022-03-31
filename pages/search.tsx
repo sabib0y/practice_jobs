@@ -12,6 +12,8 @@ import { useRouter } from 'next/router';
 import Footer from '../components/Footer';
 import { Popup } from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const key = 'a44004e391a0422c9d41dc94bdc128af'
 const url = 'https://api.nhs.scot/JobsSearch/v1.0.0/Vacancy/GetAllVacs'
@@ -50,22 +52,19 @@ const ControlledPopup = ({open, setOpen, onInputChange, searchParams, clickHandl
   );
 };
 
-
-
 const Search: NextPage = () => {
 
   const [pageNumber, setPageNumber] = useState(1)
   const [open, setOpen] = useState(false)
-  const [paginatedResults, setPaginatedResults] = useState<any>([])
 
-  const { data: unfilteredData, isLoading, runSearch, searchOptions, filteredOptions, goToPage } = useGlobalState();
+  const { data: unfilteredData, runSearch, searchOptions, filteredOptions, goToPage, error } = useGlobalState();
   const data = filteredOptions.length ? filteredOptions : unfilteredData
 
   const router = useRouter()
   const perPage = 12
 
   const { title, nhsBoard, jobFamily } = searchOptions
-  let pageCount = Math.ceil(data.length / perPage)
+  let pageCount = Math.ceil(data?.length / perPage)
   pageCount = pageCount === 0 ? 1 : pageCount
 
   const [searchParams, setSearchParams] = useState({
@@ -79,7 +78,6 @@ const Search: NextPage = () => {
   }
 
   const isDateValid = (date: any) => !!date?.length
-  // const isDateValid = (date:any) => /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date) ? date : !!date.length
 
   const getPaginatedResults = () => {
     const customPageIndex = pageNumber > pageCount ? pageCount : pageNumber
@@ -96,8 +94,7 @@ const Search: NextPage = () => {
     router.prefetch('/jobdetail/')
   }, [router])
 
-  if (isLoading) return <p>Loading...</p>
-  if (!data) return <p>No profile data</p>
+  if (error) return <p> ...there is an error with fetching the data</p>
 
   if (data?.length) {
     return (
@@ -173,7 +170,12 @@ const Search: NextPage = () => {
 
       </>
     )
-  } else { return null }
+  } else {       
+    return(
+    <div className={styles.loader_spinner}>
+      <CircularProgress />
+    </div>
+    ) }
 }
 
 export default Search

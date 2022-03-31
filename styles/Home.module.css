@@ -486,6 +486,14 @@ padding-left: 0;
   flex-direction: column;
 }
 
+.loader_spinner{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
 .overall_wrapper{
   background-color: #f0f4f5;
   overflow: hidden;
@@ -918,6 +926,12 @@ padding-left: 0;
 
  .heading_section .salary p:before{
   background:url('../public/images/money_icon.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.heading_section .link p:before{
+  background:url('../public/images/icon_link.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }

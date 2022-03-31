@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
 import styles from '../styles/Home.module.css';
 import SearchBar from '../components/SearchBar'
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
   });
 
   const [paginatedPosts, setPaginatedPosts] = useState([])
-  const { data, isLoading, runSearch, filteredOptions, goToPage } = useGlobalState();
+  const { data, runSearch, filteredOptions, goToPage, error } = useGlobalState();
 
   const generateRandomNumber = (data: any) => Math.floor(Math.random() * data.length);
   const generateRelatedLink = (links:any) => links[generateRandomNumber(links)]
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
     })
   }
 
-  if(data.length && !isDataPulled){
+  if(data?.length && !isDataPulled){
     const featuredPosts: any = getTwoFeaturedPosts(data)
     
     setFeaturedData(featuredPosts)
@@ -52,12 +52,16 @@ const Home: NextPage = () => {
     setIsDataPulled(true)
   }
 
-  if (isLoading) return <p>Loading...</p>
-  if (!data) return <p>No profile data</p>
+  if (error) return <p> ...there is an error with fetching the data</p>
 
-  if (data.length) {
     const rellatedLink = generateRelatedLink(relatedLinksData)
-    
+    if(!data){
+      return(
+        <div className={styles.loader_spinner}>
+          <CircularProgress />
+        </div>
+        )
+    }else{
     return (
       <>
         <Head>
@@ -71,7 +75,6 @@ const Home: NextPage = () => {
             <div className={styles.hero}>
               <Logo />
               <Container>
-
                 <div className={styles.hero_text}>
                   <h1>Practice Recruitment</h1>
                   <p>The NHS is <span className={styles.strong}>Scotland&apos;s biggest employer</span>.</p>
@@ -79,8 +82,8 @@ const Home: NextPage = () => {
                     If you want the chance to make a real difference to people&apos;s lives
                     consider a career with NHS Scotland.
                   </p>
-
                 </div>
+                
                 <div className={styles.search_bg}>
                 <SearchBar
                   onInputChange={onInputChange}
@@ -91,9 +94,7 @@ const Home: NextPage = () => {
                 <div className={styles.top_searches}>
                   <p>Top searches: {
                       topSearchTerms.map((item, i) => (
-                        <>
                         <span onClick={() => searchWithTopSearchTerm(item)} key={i}>{item}</span>
-                        </>
                       ))
                     }</p>
                 </div>
@@ -108,8 +109,7 @@ const Home: NextPage = () => {
               <Container>
                 <h2>Featured Jobs</h2>
                 <div className={styles.featured_jobs_inner}>
-                  {featuredData.map((item: any, i: number) => {
-                    return (
+                  {featuredData.map((item: any, i: number) => (
                     <div className={styles.block} key={i}>
                       <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item,'jobdetail') }}>
                         <CardContent>
@@ -134,7 +134,7 @@ const Home: NextPage = () => {
                           </div>
                         </CardContent>
                       </Card>
-                    </div>)}
+                    </div>)
 
                   )}
                 </div>
@@ -146,6 +146,10 @@ const Home: NextPage = () => {
 
               <div className={styles.latest_vacancies}>
                 <h2>Latest Vacancies</h2>
+
+
+                            {data.length ? 
+                            <>
                 <p>There are <strong>{data.length}</strong> vacancies listed, <span className={styles.view_all_link}><Link href='/search'>view all</Link></span></p>
                 <div className={styles.block_wrapper}>
 
@@ -162,7 +166,6 @@ const Home: NextPage = () => {
                             {
                               item.closingDate &&
                             <p className={styles.closing_date}>{new Date(item.closingDate).toLocaleDateString('en-GB')} </p>
-
                             }              
                             <p className={styles.location}>{item.location} </p>
                           </div>
@@ -176,6 +179,10 @@ const Home: NextPage = () => {
                     <button onClick={runSearch}>Show all vacancies </button>
                   </div>
                 </div>
+                          </>:
+                <p>There are currently no vacancies listed at this time</p>
+}
+
               </div>
             </Container>
 
@@ -218,7 +225,8 @@ const Home: NextPage = () => {
 
       </>
     )
-  } else {return null}
+  }
+
 }
 
 export default Home

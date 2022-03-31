@@ -6,9 +6,6 @@ import Container from '@mui/material/Container';
 import styles from '../../styles/Home.module.css';
 
 import Logo from '../../components/Logo';
-import { useGlobalState } from '../../lib/DataState';
-import { MarkerMap } from '../../components/MarkerMap'
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Footer from '../../components/Footer';
 import { practiceJobsOrganisationsUrl } from '../../utils/fetchUrls';
@@ -16,7 +13,6 @@ import { key } from '../../lib/constants';
 
 const Organisation: NextPage = () => {
     const { query: { id } }: any = useRouter()
-    const { jobDetailInfo } = useGlobalState();
     const [jobToDisplay, setJobToDisplay] = useState<any>({})
     const [isDataPulled, setIsDataPulled] = useState<boolean>(false)
 
@@ -24,21 +20,13 @@ const Organisation: NextPage = () => {
 
     useEffect(() => {
         if (id && !isDataPulled) {
-            console.log({ id });
-
-            const ref = id
-
-            fetch(practiceJobsOrganisationsUrl(ref), {
+            fetch(practiceJobsOrganisationsUrl(id), {
                 headers: {
                     'Ocp-Apim-Subscription-Key': key
                 }
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log('return', data);
-
-                    //   const filteredData = data.find((item:any) => item.location === location)
-                    //   console.log({filteredData});
                     setJobToDisplay(data[0])
                     setIsDataPulled(true)
                 }).catch(function() {
@@ -46,9 +34,6 @@ const Organisation: NextPage = () => {
                 });
         }
     }, [id, isDataPulled])
-
-
-
 
     if (isDataPulled) {
         const { name, aboutUs, organisationName, address, telephoneNumber, eMail, websiteAddress, healthBoardArea } = jobToDisplay
@@ -122,9 +107,6 @@ const Organisation: NextPage = () => {
                                             __html: aboutUs
                                         }}></div>
                                 </div>
-
-
-
                             </div>
                         </Container>
 
@@ -132,7 +114,6 @@ const Organisation: NextPage = () => {
                     <Footer />
 
                 </div>
-
             </>
         )
     } else {

@@ -19,6 +19,15 @@ a:hover{
   box-sizing: border-box;
 }
 
+.JT-inner .JT-images {
+  display: none;
+}
+
+div .popup-content{
+  min-width: 300px;
+  background: transparent;
+  border: none;
+}
 
 div.popup-overlay{
   background: rgba(0,0,0,0.6);
