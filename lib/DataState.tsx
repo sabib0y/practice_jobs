@@ -2,17 +2,19 @@ import router from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { practiceJobsUrl } from "../utils/fetchUrls";
 import { key } from "./constants";
-import useSWR from "swr";
-
+import { faker } from '@faker-js/faker';
+import useSWR from "swr"; 
+import sample from './sample.json'
+import { categories, regions, topSearchTerms } from '../utils/filterOptions.js'
+import { generateRandomNumber } from "../utils/generators";
 
 const LocalStateContext = createContext<any>({})
 
 const LocalStateProvider = LocalStateContext.Provider
 
-
 function DataStateProvider({ children }: any) {
   const [searchOptions, setSearchOptions] = useState({})
-  const [filteredOptions, setFilteredOptions] = useState([])
+  const [filteredOptions, setFilteredOptions] = useState<any>([])
   const [topSearchTerm, setTopSearchTerm] = useState('')
   const [selectedJob, setSelectedJob] = useState<any>({})
   const [jobDetailInfo, setJobDetailInfo] = useState<any>({})
@@ -28,8 +30,36 @@ function DataStateProvider({ children }: any) {
       nhsBoard: '',
       jobFamily: '',
     }
+
+  const getRandomCategoryAndRegion = () => {
+    return({
+      nhsBoard: categories[generateRandomNumber(categories)],
+      jobFamily: regions[generateRandomNumber(regions)],
+    })
+  }
+
+    const generateFillerVacancies = (number: number):any[] => {
+      let arr = []
+
+      for(let i:number = 0; i < number; i++){
+        arr.push({
+          uniqueID: faker.datatype.uuid(),
+          title: topSearchTerms[generateRandomNumber(topSearchTerms)],
+          jobFamily: getRandomCategoryAndRegion().jobFamily.label,
+          organisationName: getRandomCategoryAndRegion().nhsBoard.label,
+          closingDate: faker.datatype.datetime(),
+          nhsBoard: getRandomCategoryAndRegion().nhsBoard.label,
+          location: faker.address.city(),
+          reference: faker.datatype.string(5),
+          id: 0
+        })
+      }
+
+      return arr
+    }
+
+    const data = generateFillerVacancies(150);
     
-      
     const runSearch = (searchObj: any) => {
       const obj = searchObj !== undefined ? searchObj : defaultSearchOptions
         const newObj: any = {}
@@ -85,7 +115,7 @@ function DataStateProvider({ children }: any) {
         })
       }
 
-      const goToPage = (item: any, page: string) => {
+      const goToPage = (item: any, page: string): void => {
         const path = item.reference ? item.reference : item.id
         router.push({
           pathname: `/${page}/${path}`
@@ -117,10 +147,8 @@ function DataStateProvider({ children }: any) {
       }
     }).then((res) => res.json())
 
-    const { data, error } = useSWR(
-      url,
-      fetcher
-    );
+    let error
+
 
     return <LocalStateProvider value= { {
         data,

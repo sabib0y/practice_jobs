@@ -15,6 +15,8 @@ import { useGlobalState } from '../lib/DataState';
 import Footer from '../components/Footer';
 import { relatedLinksData } from '../lib/relatedLinksData';
 import { topSearchTerms } from '../utils/filterOptions';
+import { generateRandomNumber } from '../utils/generators';
+import VacancyCard from '../components/Card';
 
 const Home: NextPage = () => {
   const [featuredData, setFeaturedData] = useState([])
@@ -28,9 +30,8 @@ const Home: NextPage = () => {
   const [paginatedPosts, setPaginatedPosts] = useState([])
   const { data, runSearch, filteredOptions, goToPage, error } = useGlobalState();
 
-  const generateRandomNumber = (data: any) => Math.floor(Math.random() * data.length);
-  const generateRelatedLink = (links:any) => links[generateRandomNumber(links)]
-  const getTwoFeaturedPosts = (data: any) => [1,2].map(i => data[generateRandomNumber(data)])
+  const generateRelatedLink = (links: any) => links[generateRandomNumber(links)]
+  const getTwoFeaturedPosts = (data: any) => [1, 2].map(i => data[generateRandomNumber(data)])
 
   const onInputChange = (e: any) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value })
@@ -38,15 +39,15 @@ const Home: NextPage = () => {
 
   const searchWithTopSearchTerm = (searchTerm: string) => {
     runSearch({
-      title:searchTerm,
+      title: searchTerm,
       nhsBoard: '',
       jobFamily: '',
     })
   }
 
-  if(data?.length && !isDataPulled){
+  if (data?.length && !isDataPulled) {
     const featuredPosts: any = getTwoFeaturedPosts(data)
-    
+
     setFeaturedData(featuredPosts)
     setPaginatedPosts(data.slice(0, 6))
     setIsDataPulled(true)
@@ -54,14 +55,14 @@ const Home: NextPage = () => {
 
   if (error) return <p> ...there is an error with fetching the data</p>
 
-    const rellatedLink = generateRelatedLink(relatedLinksData)
-    if(!data){
-      return(
-        <div className={styles.loader_spinner}>
-          <CircularProgress />
-        </div>
-        )
-    }else{
+  const rellatedLink = generateRelatedLink(relatedLinksData)
+  if (!data) {
+    return (
+      <div className={styles.loader_spinner}>
+        <CircularProgress />
+      </div>
+    )
+  } else {
     return (
       <>
         <Head>
@@ -83,21 +84,21 @@ const Home: NextPage = () => {
                     consider a career with NHS Scotland.
                   </p>
                 </div>
-                
+
                 <div className={styles.search_bg}>
-                <SearchBar
-                  onInputChange={onInputChange}
-                  searchParams={searchParams}
-                  clickHandler={() => {runSearch(searchParams)}}
-                  filteredOptions={filteredOptions}
-                />
-                <div className={styles.top_searches}>
-                  <p>Top searches: {
+                  <SearchBar
+                    onInputChange={onInputChange}
+                    searchParams={searchParams}
+                    clickHandler={() => { runSearch(searchParams) }}
+                    filteredOptions={filteredOptions}
+                  />
+                  <div className={styles.top_searches}>
+                    <p>Top searches: {
                       topSearchTerms.map((item, i) => (
                         <span onClick={() => searchWithTopSearchTerm(item)} key={i}>{item}</span>
                       ))
                     }</p>
-                </div>
+                  </div>
 
                 </div>
               </Container>
@@ -111,21 +112,21 @@ const Home: NextPage = () => {
                 <div className={styles.featured_jobs_inner}>
                   {featuredData.map((item: any, i: number) => (
                     <div className={styles.block} key={i}>
-                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item,'jobdetail') }}>
+                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item, 'jobdetail') }}>
                         <CardContent>
                           <h4>{item.title} </h4>
                           <div className={styles.inner_block}>
                             <div className={styles.organisation}>
                               <span>Organisation</span>
-                                <p>{ item.organisationName ? item.organisationName : 'NHS'} </p>
-                              </div>
-                              {
-                                item.closingDate &&
-                                <div className={styles.closing_date}>
+                              <p>{item.organisationName ? item.organisationName : 'NHS'} </p>
+                            </div>
+                            {
+                              item.closingDate &&
+                              <div className={styles.closing_date}>
                                 <span>Closing date</span>
                                 <p>{new Date(item.closingDate).toLocaleDateString('en-US')} </p>
                               </div>
-                              }
+                            }
 
                             <div className={styles.location}>
                               <span>Address</span>
@@ -138,89 +139,59 @@ const Home: NextPage = () => {
 
                   )}
                 </div>
-
               </Container>
             </div>
 
             <Container>
-
               <div className={styles.latest_vacancies}>
                 <h2>Latest Vacancies</h2>
-
-
-                            {data.length ? 
-                            <>
-                <p>There are <strong>{data.length}</strong> vacancies listed, <span className={styles.view_all_link}><Link href='/search'>view all</Link></span></p>
-                <div className={styles.block_wrapper}>
-
-                  {paginatedPosts.map((item: any, i: number) => (
-                    <div className={styles.block} key={i}>
-                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item,'jobdetail') }}>
-                        <CardContent>
-                          <h4>{item.title} </h4>
-                          <div className={styles.inner_block}>
-                            {item.organisationName?.length ? 
-                              <p className={styles.org}>{item.organisationName} </p> : 
-                              <p>NHS</p>
-                            }      
-                            {
-                              item.closingDate &&
-                            <p className={styles.closing_date}>{new Date(item.closingDate).toLocaleDateString('en-GB')} </p>
-                            }              
-                            <p className={styles.location}>{item.location} </p>
-                          </div>
-                        </CardContent>
-
-                      </Card>
+                {data.length ?
+                  <>
+                    <p>There are <strong>{data.length}</strong> vacancies listed, <span className={styles.view_all_link}><Link href='/search'>view all</Link></span></p>
+                    <div className={styles.block_wrapper}>
+                      {paginatedPosts.map((item: any, i: number) => (
+                        <VacancyCard item={item} key={i} />
+                      ))}
+                      <div className={styles.btn_wrapper}>
+                        <button onClick={runSearch}>Show all vacancies </button>
+                      </div>
                     </div>
-
-                  ))}
-                  <div className={styles.btn_wrapper}>
-                    <button onClick={runSearch}>Show all vacancies </button>
-                  </div>
-                </div>
-                          </>:
-                <p>There are currently no vacancies listed at this time</p>
-}
+                  </> :
+                  <p>There are currently no vacancies listed at this time</p>
+                }
 
               </div>
             </Container>
 
             <div className={styles.related_links}>
-            <Container>
-
-            <h3>Related links</h3>
-            </Container>
+              <Container>
+                <h3>Related links</h3>
+              </Container>
 
               <div className={styles.related_links_bg}>
-            <Container>
-              <div className={styles.related_links_wrapper}>
+                <Container>
+                  <div className={styles.related_links_wrapper}>
+                      <a
+                        className={styles.related_links_inner}
+                        href={rellatedLink.link}
+                        rel="noopener noreferrer"
+                      >
+                        <div>
+                          <h3>{rellatedLink.heading}</h3>
+                          <p>{rellatedLink.body}</p>
+                          <button>Find out more</button>
+                        </div>
+                      </a>
+                  </div>
 
-              {
-              <a 
-              className={styles.related_links_inner} 
-              href={rellatedLink.link}
-              rel="noopener noreferrer"
-              >
-                <div>
-                  <h3>{rellatedLink.heading}</h3>
-                  <p>{rellatedLink.body}</p>
-                  <button>Find out more</button>
-                </div>
-              </a>
-              }
-
-
+                </Container>
               </div>
 
-            </Container>
-            </div>
-              
             </div>
 
           </main>
 
-          <Footer/>
+          <Footer />
         </div>
 
       </>

@@ -11,13 +11,9 @@ import Pagination from '../components/Pagination';
 import { useRouter } from 'next/router';
 import Footer from '../components/Footer';
 import { Popup } from 'reactjs-popup';
-import CloseIcon from '@mui/icons-material/Close';
+// import CloseIcon from '@mui/icons-material/Close';
+import VacancyCard from '../components/Card';
 import CircularProgress from '@mui/material/CircularProgress';
-
-
-const key = 'a44004e391a0422c9d41dc94bdc128af'
-const url = 'https://api.nhs.scot/JobsSearch/v1.0.0/Vacancy/GetAllVacs'
-
 
 interface Props{
   open: boolean,
@@ -37,7 +33,7 @@ const ControlledPopup = ({open, setOpen, onInputChange, searchParams, clickHandl
       onClose={closeModal}>
     <div className={styles.popup_search}>
         <span onClick={closeModal}>
-        <CloseIcon/>
+        {/* <CloseIcon/> */}
         </span>
       <SearchBar
         onInputChange={onInputChange}
@@ -141,19 +137,7 @@ const Search: NextPage = () => {
                 <div className={styles.block_wrapper}>
 
                   {getPaginatedResults()?.map((item: any, i: number) => (
-                    <div className={styles.block} key={i}>
-                      <Card sx={{ minWidth: 275 }} className={styles.wide_card} onClick={() => { goToPage(item, 'jobdetail')}}>
-                        <CardContent>
-                          <h4>{item.title} </h4>
-                          <div className={styles.inner_block}>
-                            {item.organisationName?.length ? <p className={styles.org}>{item.organisationName} </p> : <p className={styles.org}>NHS</p>}
-                            {isDateValid(item.closingDate) && <p className={styles.closing_date}>{new Date(item.closingDate).toLocaleDateString('en-GB')} </p>}
-                            <p className={styles.location}>{item.location} </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-
+                        <VacancyCard item={item} key={i} />
                   ))}
                 </div>
               </div>
